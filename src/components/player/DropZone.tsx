@@ -145,7 +145,7 @@ const DropZone: React.FC<DropZoneProps> = ({ onFilesAdded, hasMedia }) => {
           e.stopPropagation();
           handleClick();
         }}
-        className="mt-4 sm:mt-6 btn-accent px-6 sm:px-8 py-2 sm:py-3 text-sm sm:text-base font-semibold flex items-center gap-2"
+        className="mt-4 sm:mt-6 px-6 sm:px-8 py-2 sm:py-3 text-sm sm:text-base font-semibold flex items-center gap-2 rounded-lg transition-all duration-200 ease-out bg-primary text-primary-foreground hover:scale-105 active:scale-95 focus:outline-none focus:ring-2 focus:ring-primary/50 shadow-lg hover:shadow-primary/40"
       >
         <FolderOpen className="w-4 sm:w-5 h-4 sm:h-5" />
         Browse Files
