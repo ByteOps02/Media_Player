@@ -49,10 +49,12 @@ const MediaPlayer: React.FC = () => {
 
   // Equalizer
   const equalizer = useEqualizer();
+  const { initializeEqualizer } = equalizer;
   const [showEqualizer, setShowEqualizer] = useState(false);
 
   // Recently Played
   const recentlyPlayed = useRecentlyPlayed();
+  const { addToRecent, updatePosition } = recentlyPlayed;
   const [showRecentlyPlayed, setShowRecentlyPlayed] = useState(false);
 
   // Video Thumbnails
@@ -60,6 +62,7 @@ const MediaPlayer: React.FC = () => {
     currentMedia?.type === 'video' ? currentMedia.url : undefined,
     state.duration
   );
+  const { generateThumbnails, hasThumbnails, isGenerating, clearThumbnails } = thumbnails;
 
   // Advanced Features
   const advancedFeatures = useAdvancedFeatures(mediaRef, state.currentTime, togglePlay);
@@ -67,50 +70,50 @@ const MediaPlayer: React.FC = () => {
 
   const [showPlaylistModal, setShowPlaylistModal] = useState(false);
   const [controlsVisible, setControlsVisible] = useState(true);
-  const [controlsTimeout, setControlsTimeout] = useState<NodeJS.Timeout | null>(null);
+  const controlsTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const isVideo = currentMedia?.type === 'video';
 
   // Initialize equalizer when media is loaded
   useEffect(() => {
     if (mediaRef.current && currentMedia) {
-      equalizer.initializeEqualizer(mediaRef.current);
+      initializeEqualizer(mediaRef.current);
     }
-  }, [currentMedia, mediaRef]);
+  }, [currentMedia, mediaRef, initializeEqualizer]);
 
   // Generate thumbnails for video
   useEffect(() => {
-    if (isVideo && state.duration > 0 && !thumbnails.hasThumbnails && !thumbnails.isGenerating) {
-      thumbnails.generateThumbnails();
+    if (isVideo && state.duration > 0 && !hasThumbnails && !isGenerating) {
+      generateThumbnails();
     }
-  }, [isVideo, state.duration, thumbnails]);
+  }, [isVideo, state.duration, hasThumbnails, isGenerating, generateThumbnails]);
 
   // Clear thumbnails when media changes
   useEffect(() => {
-    thumbnails.clearThumbnails();
-  }, [currentMedia?.id]);
+    clearThumbnails();
+  }, [currentMedia?.id, clearThumbnails]);
 
   // Add to recently played
   useEffect(() => {
     if (currentMedia && state.duration > 0) {
-      recentlyPlayed.addToRecent({
+      addToRecent({
         id: currentMedia.id,
         name: currentMedia.name,
         type: currentMedia.type,
         duration: state.duration,
       });
     }
-  }, [currentMedia?.id, state.duration]);
+  }, [currentMedia, state.duration, addToRecent]);
 
   // Update position for resume feature
   useEffect(() => {
     if (currentMedia && state.currentTime > 0 && state.duration > 0) {
       const debounce = setTimeout(() => {
-        recentlyPlayed.updatePosition(currentMedia.id, state.currentTime, state.duration);
+        updatePosition(currentMedia.id, state.currentTime, state.duration);
       }, 5000);
       return () => clearTimeout(debounce);
     }
-  }, [currentMedia?.id, state.currentTime, state.duration]);
+  }, [currentMedia, state.currentTime, state.duration, updatePosition]);
 
   // Auto-hide controls for video
   useEffect(() => {
@@ -120,29 +123,27 @@ const MediaPlayer: React.FC = () => {
     }
 
     const hideControls = () => {
-      if (controlsTimeout) clearTimeout(controlsTimeout);
-      const timeout = setTimeout(() => {
+      if (controlsTimeoutRef.current) clearTimeout(controlsTimeoutRef.current);
+      controlsTimeoutRef.current = setTimeout(() => {
         setControlsVisible(false);
       }, 3000);
-      setControlsTimeout(timeout);
     };
 
     hideControls();
 
     return () => {
-      if (controlsTimeout) clearTimeout(controlsTimeout);
+      if (controlsTimeoutRef.current) clearTimeout(controlsTimeoutRef.current);
     };
-  }, [isVideo, state.isPlaying]);
+  }, [isVideo, state.isPlaying, showPlaylistModal, showEqualizer, showRecentlyPlayed, showBookmarks]);
 
   const handleMouseMove = () => {
     if (isVideo) {
       setControlsVisible(true);
-      if (controlsTimeout) clearTimeout(controlsTimeout);
+      if (controlsTimeoutRef.current) clearTimeout(controlsTimeoutRef.current);
       if (state.isPlaying) {
-        const timeout = setTimeout(() => {
+        controlsTimeoutRef.current = setTimeout(() => {
           setControlsVisible(false);
         }, 3000);
-        setControlsTimeout(timeout);
       }
     }
   };
@@ -206,14 +207,14 @@ const MediaPlayer: React.FC = () => {
       <div className="flex-1 flex flex-col relative min-w-0">
         {/* Header */}
         {!state.isFullscreen && (
-          <header className="flex items-center justify-between px-3 sm:px-6 py-3 sm:py-4 glass z-10 gap-2 sm:gap-0">
-            <div className="flex items-center gap-2 sm:gap-3 min-w-0">
-              <div className="w-8 sm:w-10 h-8 sm:h-10 rounded-lg sm:rounded-xl bg-gradient-to-br from-primary to-accent flex items-center justify-center shadow-lg flex-shrink-0">
-                <span className="text-primary-foreground font-bold text-base sm:text-lg">▶</span>
+          <header className="flex items-center justify-between px-4 py-2 glass-strong z-10 gap-2">
+            <div className="flex items-center gap-2 min-w-0">
+              <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-primary to-accent flex items-center justify-center shadow-md flex-shrink-0">
+                <span className="text-primary-foreground font-bold text-sm">▶</span>
               </div>
               <div className="min-w-0">
-                <h1 className="font-bold text-sm sm:text-base text-foreground tracking-tight">Media Player</h1>
-                <p className="text-xs text-muted-foreground truncate max-w-[120px] sm:max-w-xs">
+                <h1 className="font-bold text-sm text-foreground tracking-tight">Media Player</h1>
+                <p className="text-[10px] text-muted-foreground truncate max-w-[200px]">
                   {currentMedia ? currentMedia.name : 'No media loaded'}
                 </p>
               </div>
@@ -243,7 +244,7 @@ const MediaPlayer: React.FC = () => {
               <video
                 ref={mediaRef as React.RefObject<HTMLVideoElement>}
                 src={currentMedia.url}
-                className="w-full h-full object-contain"
+                className={`w-full h-full ${state.isFullscreen ? 'object-cover' : 'object-contain'}`}
                 onClick={togglePlay}
                 onDoubleClick={toggleFullscreen}
               />
@@ -328,7 +329,7 @@ const MediaPlayer: React.FC = () => {
 
       {/* Playlist Popover */}
       {showPlaylistModal && (
-        <div className="absolute bottom-24 left-4 z-50 w-80 max-h-[60vh] glass rounded-xl overflow-hidden flex flex-col animate-in slide-in-from-bottom-5 fade-in duration-200">
+        <div className="absolute bottom-24 left-4 z-50 w-80 max-h-[60vh] glass-strong rounded-xl overflow-hidden flex flex-col animate-in slide-in-from-bottom-5 fade-in duration-200">
           <button
             onClick={() => setShowPlaylistModal(false)}
             className="absolute top-2 right-2 z-20 control-btn text-muted-foreground hover:text-foreground bg-background/50 rounded-full p-1"

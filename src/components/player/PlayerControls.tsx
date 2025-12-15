@@ -109,11 +109,11 @@ const PlayerControls: React.FC<PlayerControlsProps> = ({
 
   return (
     <div className={`
-      w-full px-3 sm:px-4 py-3 sm:py-5 transition-all duration-300
+      w-full px-3 sm:px-4 py-2 transition-all duration-300
       ${isVideo ? 'glass-strong' : 'glass'}
     `}>
       {/* Progress bar */}
-      <div className="mb-3 sm:mb-4">
+      <div className="mb-2">
         <ProgressBar
           currentTime={state.currentTime}
           duration={state.duration}
@@ -144,7 +144,7 @@ const PlayerControls: React.FC<PlayerControlsProps> = ({
             className={`control-btn ${textColor} hover:text-primary transition-colors`}
             title="Add Files"
           >
-            <Plus className="w-5 h-5" />
+            <Plus className="w-4 h-4" />
           </button>
 
           {/* Playlist button */}
@@ -153,7 +153,7 @@ const PlayerControls: React.FC<PlayerControlsProps> = ({
             className={`control-btn ${textColor} hover:text-primary transition-colors`}
             title="Playlist"
           >
-            <ListMusic className="w-5 h-5" />
+            <ListMusic className="w-4 h-4" />
           </button>
 
           {/* Recently Played button */}
@@ -162,7 +162,7 @@ const PlayerControls: React.FC<PlayerControlsProps> = ({
             className={`control-btn ${textColor} hover:text-primary transition-colors`}
             title="Recently Played"
           >
-            <Clock className="w-5 h-5" />
+            <Clock className="w-4 h-4" />
           </button>
         </div>
 
@@ -174,7 +174,7 @@ const PlayerControls: React.FC<PlayerControlsProps> = ({
             className={`control-btn ${textColor} hover:text-primary transition-colors`}
             title="Previous (B)"
           >
-            <SkipBack className="w-5 sm:w-6 h-5 sm:h-6" />
+            <SkipBack className="w-5 h-5" />
           </button>
 
           {/* Shuffle */}
@@ -184,7 +184,7 @@ const PlayerControls: React.FC<PlayerControlsProps> = ({
               className={`control-btn transition-all hidden sm:flex ${state.shuffle ? 'text-primary scale-110 glow-accent-sm' : `${textColor} hover:text-primary`}`}
               title="Shuffle"
             >
-              <Shuffle className="w-5 h-5" />
+              <Shuffle className="w-4 h-4" />
             </button>
           )}
 
@@ -194,7 +194,7 @@ const PlayerControls: React.FC<PlayerControlsProps> = ({
             className={`control-btn ${textColor} hover:text-primary transition-colors hidden sm:flex gap-0.5`}
             title="Skip backward 10s (←)"
           >
-            <ChevronLeft className="w-4 sm:w-5 h-4 sm:h-5" />
+            <ChevronLeft className="w-4 h-4" />
             <span className="text-xs font-medium">10</span>
           </button>
 
@@ -205,11 +205,11 @@ const PlayerControls: React.FC<PlayerControlsProps> = ({
             title={state.isPlaying ? 'Pause (Space)' : 'Play (Space)'}
           >
             {state.isLoading ? (
-              <Loader2 className="w-5 sm:w-6 h-5 sm:h-6 animate-spin" />
+              <Loader2 className="w-5 h-5 animate-spin" />
             ) : state.isPlaying ? (
-              <Pause className="w-5 sm:w-6 h-5 sm:h-6" />
+              <Pause className="w-5 h-5" />
             ) : (
-              <Play className="w-5 sm:w-6 h-5 sm:h-6 ml-0.5" />
+              <Play className="w-5 h-5 ml-0.5" />
             )}
           </button>
 
@@ -220,7 +220,7 @@ const PlayerControls: React.FC<PlayerControlsProps> = ({
             title="Skip forward 10s (→)"
           >
             <span className="text-xs font-medium">10</span>
-            <ChevronRight className="w-4 sm:w-5 h-4 sm:h-5" />
+            <ChevronRight className="w-4 h-4" />
           </button>
 
           {/* Next */}
@@ -229,7 +229,7 @@ const PlayerControls: React.FC<PlayerControlsProps> = ({
             className={`control-btn ${textColor} hover:text-primary transition-colors`}
             title="Next (N)"
           >
-            <SkipForward className="w-5 sm:w-6 h-5 sm:h-6" />
+            <SkipForward className="w-5 h-5" />
           </button>
 
           {/* Repeat */}
@@ -239,7 +239,7 @@ const PlayerControls: React.FC<PlayerControlsProps> = ({
               className={`control-btn transition-all hidden sm:flex ${state.repeat !== 'none' ? 'text-primary scale-110 glow-accent-sm' : `${textColor} hover:text-primary`}`}
               title={`Repeat: ${state.repeat}`}
             >
-              <RepeatIcon className="w-5 h-5" />
+              <RepeatIcon className="w-4 h-4" />
             </button>
           )}
         </div>
@@ -281,7 +281,7 @@ const PlayerControls: React.FC<PlayerControlsProps> = ({
                 className={`control-btn transition-all hidden sm:flex ${state.isPiP ? 'text-primary scale-110' : `${textColor} hover:text-primary`}`}
                 title="Picture-in-Picture (Shift+P)"
               >
-                <PictureInPicture className="w-5 h-5" />
+                <PictureInPicture className="w-4 h-4" />
               </button>
 
               <button
@@ -290,9 +290,9 @@ const PlayerControls: React.FC<PlayerControlsProps> = ({
                 title="Fullscreen (F)"
               >
                 {state.isFullscreen ? (
-                  <Minimize className="w-5 h-5" />
+                  <Minimize className="w-4 h-4" />
                 ) : (
-                  <Maximize className="w-5 h-5" />
+                  <Maximize className="w-4 h-4" />
                 )}
               </button>
             </>

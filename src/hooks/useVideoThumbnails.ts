@@ -36,7 +36,7 @@ export const useVideoThumbnails = (videoSrc: string | undefined, duration: numbe
       }
       canvasRef.current = null;
     };
-  }, [videoSrc]);
+  }, [videoSrc, duration]);
 
   // Generate thumbnails at intervals
   const generateThumbnails = useCallback(async () => {

@@ -14,7 +14,7 @@ const ThemeToggle: React.FC = () => {
       <button
         onClick={() => handleThemeChange('light')}
         className={`
-          flex items-center justify-center w-8 h-8 rounded-md transition-all duration-200
+          flex items-center justify-center w-7 h-7 rounded-md transition-all duration-200
           ${theme === 'light'
             ? 'bg-primary text-primary-foreground shadow-lg scale-110'
             : 'text-muted-foreground hover:text-foreground hover:bg-secondary/50'
@@ -28,7 +28,7 @@ const ThemeToggle: React.FC = () => {
       <button
         onClick={() => handleThemeChange('dark')}
         className={`
-          flex items-center justify-center w-8 h-8 rounded-md transition-all duration-200
+          flex items-center justify-center w-7 h-7 rounded-md transition-all duration-200
           ${theme === 'dark'
             ? 'bg-primary text-primary-foreground shadow-lg scale-110'
             : 'text-muted-foreground hover:text-foreground hover:bg-secondary/50'
@@ -42,7 +42,7 @@ const ThemeToggle: React.FC = () => {
       <button
         onClick={() => handleThemeChange('system')}
         className={`
-          flex items-center justify-center w-8 h-8 rounded-md transition-all duration-200
+          flex items-center justify-center w-7 h-7 rounded-md transition-all duration-200
           ${theme === 'system'
             ? 'bg-primary text-primary-foreground shadow-lg scale-110'
             : 'text-muted-foreground hover:text-foreground hover:bg-secondary/50'

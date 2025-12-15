@@ -125,7 +125,7 @@ const SettingsMenu: React.FC<SettingsMenuProps> = ({
       </button>
 
       {isOpen && (
-        <div className="absolute bottom-full right-0 mb-2 w-56 sm:w-64 bg-card border border-border rounded-xl shadow-2xl overflow-hidden animate-scale-in max-h-[80vh] overflow-y-auto">
+        <div className="absolute bottom-full right-0 mb-2 w-56 sm:w-64 glass-strong rounded-xl shadow-2xl overflow-hidden animate-scale-in max-h-[80vh] overflow-y-auto">
           {/* Main Menu */}
           {(subMenu === null || subMenu === 'main') && (
             <>

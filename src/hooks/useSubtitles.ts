@@ -180,7 +180,7 @@ export const useSubtitles = (currentTime: number) => {
     if (current?.id !== state.currentSubtitle?.id) {
       setState((prev) => ({ ...prev, currentSubtitle: current || null }));
     }
-  }, [currentTime, state.subtitles, state.currentSubtitle?.id]);
+  }, [currentTime, state.subtitles, state.currentSubtitle, state.currentSubtitle?.id]);
 
   return {
     ...state,
