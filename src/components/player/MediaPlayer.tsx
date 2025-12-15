@@ -13,7 +13,8 @@ import SubtitleDisplay from './SubtitleDisplay';
 import Equalizer from './Equalizer';
 import RecentlyPlayedPanel from './RecentlyPlayedPanel';
 import BookmarksPanel from './BookmarksPanel';
-import { PanelLeftOpen, PanelLeftClose, Image } from 'lucide-react';
+import ThemeToggle from '@/components/ThemeToggle';
+import { Image, X } from 'lucide-react';
 import { toast } from 'sonner';
 
 const MediaPlayer: React.FC = () => {
@@ -64,7 +65,7 @@ const MediaPlayer: React.FC = () => {
   const advancedFeatures = useAdvancedFeatures(mediaRef, state.currentTime, togglePlay);
   const [showBookmarks, setShowBookmarks] = useState(false);
 
-  const [showPlaylist, setShowPlaylist] = useState(true);
+  const [showPlaylistModal, setShowPlaylistModal] = useState(false);
   const [controlsVisible, setControlsVisible] = useState(true);
   const [controlsTimeout, setControlsTimeout] = useState<NodeJS.Timeout | null>(null);
 
@@ -113,7 +114,7 @@ const MediaPlayer: React.FC = () => {
 
   // Auto-hide controls for video
   useEffect(() => {
-    if (!isVideo || !state.isPlaying) {
+    if (!isVideo || !state.isPlaying || showPlaylistModal || showEqualizer || showRecentlyPlayed || showBookmarks) {
       setControlsVisible(true);
       return;
     }
@@ -189,7 +190,7 @@ const MediaPlayer: React.FC = () => {
   return (
     <div 
       ref={containerRef}
-      className="flex h-screen bg-background overflow-hidden"
+      className={`flex bg-background overflow-hidden relative ${state.isFullscreen ? 'w-screen h-screen fixed inset-0 z-[999]' : 'h-screen'}`}
       onMouseMove={handleMouseMove}
     >
       {/* Hidden file input for subtitles */}
@@ -205,39 +206,30 @@ const MediaPlayer: React.FC = () => {
       <div className="flex-1 flex flex-col relative min-w-0">
         {/* Header */}
         {!state.isFullscreen && (
-          <header className="flex items-center justify-between px-6 py-4 border-b border-border bg-card">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-primary/20 flex items-center justify-center">
-                <span className="text-primary font-bold text-lg">▶</span>
+          <header className="flex items-center justify-between px-3 sm:px-6 py-3 sm:py-4 glass z-10 gap-2 sm:gap-0">
+            <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+              <div className="w-8 sm:w-10 h-8 sm:h-10 rounded-lg sm:rounded-xl bg-gradient-to-br from-primary to-accent flex items-center justify-center shadow-lg flex-shrink-0">
+                <span className="text-primary-foreground font-bold text-base sm:text-lg">▶</span>
               </div>
-              <div>
-                <h1 className="font-semibold text-foreground">Media Player</h1>
-                <p className="text-xs text-muted-foreground">
+              <div className="min-w-0">
+                <h1 className="font-bold text-sm sm:text-base text-foreground tracking-tight">Media Player</h1>
+                <p className="text-xs text-muted-foreground truncate max-w-[120px] sm:max-w-xs">
                   {currentMedia ? currentMedia.name : 'No media loaded'}
                 </p>
               </div>
             </div>
 
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
               {/* Thumbnail generation indicator */}
               {thumbnails.isGenerating && (
-                <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                  <Image className="w-4 h-4 animate-pulse" />
+                <div className="hidden sm:flex items-center gap-2 text-xs text-primary animate-bounce-subtle">
+                  <Image className="w-4 h-4" />
                   <span>Generating previews...</span>
                 </div>
               )}
 
-              <button
-                onClick={() => setShowPlaylist(!showPlaylist)}
-                className="control-btn text-foreground lg:hidden"
-                title="Toggle playlist"
-              >
-                {showPlaylist ? (
-                  <PanelLeftClose className="w-5 h-5" />
-                ) : (
-                  <PanelLeftOpen className="w-5 h-5" />
-                )}
-              </button>
+              {/* Theme Toggle */}
+              <ThemeToggle />
             </div>
           </header>
         )}
@@ -289,7 +281,7 @@ const MediaPlayer: React.FC = () => {
           <div className={`
             ${isVideo ? 'absolute bottom-0 left-0 right-0' : 'relative'}
             transition-all duration-300
-            ${isVideo && !controlsVisible ? 'opacity-0 translate-y-4' : 'opacity-100 translate-y-0'}
+            ${isVideo && !controlsVisible ? 'opacity-0 translate-y-4 pointer-events-none' : 'opacity-100 translate-y-0 pointer-events-auto'}
           `}>
             <PlayerControls
               state={state}
@@ -306,6 +298,8 @@ const MediaPlayer: React.FC = () => {
               onPlayPrevious={playPrevious}
               onToggleShuffle={toggleShuffle}
               onToggleRepeat={toggleRepeat}
+              onAddFiles={handleAddMore}
+              onOpenPlaylist={() => setShowPlaylistModal(true)}
               hasPlaylist={playlist.length > 1}
               thumbnailGetter={isVideo ? thumbnails.getThumbnail : undefined}
               abLoop={advancedFeatures.abLoop}
@@ -332,44 +326,35 @@ const MediaPlayer: React.FC = () => {
         )}
       </div>
 
-      {/* Playlist sidebar */}
-      <aside className={`
-        w-80 border-l border-border bg-card flex-shrink-0
-        transition-all duration-300 ease-out
-        ${showPlaylist ? 'translate-x-0' : 'translate-x-full'}
-        ${state.isFullscreen ? 'hidden' : ''}
-        hidden lg:block
-      `}>
-        <Playlist
-          playlist={playlist}
-          currentIndex={currentIndex}
-          onPlay={playIndex}
-          onRemove={removeFromPlaylist}
-          onClear={clearPlaylist}
-          onAddMore={handleAddMore}
-        />
-      </aside>
-
-      {/* Mobile playlist overlay */}
-      {showPlaylist && !state.isFullscreen && (
-        <div className="fixed inset-0 z-50 lg:hidden">
-          <div 
-            className="absolute inset-0 bg-background/80 backdrop-blur-sm"
-            onClick={() => setShowPlaylist(false)}
+      {/* Playlist Popover */}
+      {showPlaylistModal && (
+        <div className="absolute bottom-24 left-4 z-50 w-80 max-h-[60vh] glass rounded-xl overflow-hidden flex flex-col animate-in slide-in-from-bottom-5 fade-in duration-200">
+          <button
+            onClick={() => setShowPlaylistModal(false)}
+            className="absolute top-2 right-2 z-20 control-btn text-muted-foreground hover:text-foreground bg-background/50 rounded-full p-1"
+            title="Close"
+          >
+            <X className="w-4 h-4" />
+          </button>
+          <Playlist
+            playlist={playlist}
+            currentIndex={currentIndex}
+            onPlay={(index) => {
+              playIndex(index);
+              // Optional: Keep playlist open after selecting? Or close?
+              // Standard behavior is usually to keep open or close depending on UX.
+              // User said "list appears in the centre... better to display it just top of playlist button".
+              // Usually popovers close on selection if it's a menu, but for playlist it might be better to stay open.
+              // I'll leave it open for now or follow previous logic?
+              // Previous logic was `setShowPlaylistModal(false)`.
+              // I'll keep it closing on play for now, but user can reopen easily.
+              // Actually, for a playlist, you might want to see what's next.
+              // I will remove `setShowPlaylistModal(false)` here so it acts like a panel.
+               playIndex(index);
+            }}
+            onRemove={removeFromPlaylist}
+            onClear={clearPlaylist}
           />
-          <aside className="absolute right-0 top-0 bottom-0 w-80 max-w-[85vw] bg-card border-l border-border animate-slide-in-right">
-            <Playlist
-              playlist={playlist}
-              currentIndex={currentIndex}
-              onPlay={(index) => {
-                playIndex(index);
-                setShowPlaylist(false);
-              }}
-              onRemove={removeFromPlaylist}
-              onClear={clearPlaylist}
-              onAddMore={handleAddMore}
-            />
-          </aside>
         </div>
       )}
 

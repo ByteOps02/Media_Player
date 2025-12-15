@@ -26,18 +26,18 @@ const Equalizer: React.FC<EqualizerProps> = ({
   onClose,
 }) => {
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-background/80 backdrop-blur-sm animate-fade-in">
-      <div className="w-full max-w-2xl mx-4 bg-card border border-border rounded-2xl shadow-2xl overflow-hidden animate-scale-in">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-background/80 backdrop-blur-sm animate-fade-in p-4">
+      <div className="w-full max-w-2xl bg-card border border-border rounded-2xl shadow-2xl overflow-hidden animate-scale-in max-h-[90vh] overflow-y-auto">
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-border">
-          <div className="flex items-center gap-3">
-            <Sliders className="w-5 h-5 text-primary" />
-            <h2 className="text-lg font-semibold text-foreground">Equalizer</h2>
+        <div className="flex items-center justify-between px-4 sm:px-6 py-3 sm:py-4 border-b border-border gap-2 flex-wrap sticky top-0 bg-card z-10">
+          <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+            <Sliders className="w-4 sm:w-5 h-4 sm:h-5 text-primary flex-shrink-0" />
+            <h2 className="text-base sm:text-lg font-semibold text-foreground truncate">Equalizer</h2>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1 sm:gap-2 flex-shrink-0">
             <button
               onClick={onToggle}
-              className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
+              className={`px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg text-xs sm:text-sm font-medium transition-colors ${
                 isEnabled
                   ? 'bg-primary text-primary-foreground'
                   : 'bg-secondary text-muted-foreground'
@@ -47,7 +47,7 @@ const Equalizer: React.FC<EqualizerProps> = ({
             </button>
             <button
               onClick={onReset}
-              className="control-btn text-muted-foreground hover:text-foreground"
+              className="control-btn text-muted-foreground hover:text-foreground flex-shrink-0"
               title="Reset"
             >
               <RotateCcw className="w-4 h-4" />

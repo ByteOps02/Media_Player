@@ -67,6 +67,9 @@ const SettingsMenu: React.FC<SettingsMenuProps> = ({
   const [subMenu, setSubMenu] = useState<'main' | 'subtitles' | 'sleepTimer' | 'abLoop' | null>(null);
   const menuRef = useRef<HTMLDivElement>(null);
 
+  const textColor = isVideo ? 'text-white/90 drop-shadow-md' : 'text-foreground';
+  const mutedColor = isVideo ? 'text-white/70 drop-shadow-sm' : 'text-muted-foreground';
+
   // Close on outside click
   useEffect(() => {
     const handleClick = (e: MouseEvent) => {
@@ -97,17 +100,17 @@ const SettingsMenu: React.FC<SettingsMenuProps> = ({
   }> = ({ icon, label, onClick, hasSubmenu, active, badge }) => (
     <button
       onClick={onClick}
-      className={`w-full flex items-center gap-3 px-4 py-2.5 text-sm hover:bg-secondary/80 transition-colors
-        ${active ? 'text-primary' : 'text-foreground'}`}
+      className={`w-full flex items-center gap-2 sm:gap-3 px-3 sm:px-4 py-2 sm:py-2.5 text-xs sm:text-sm hover:bg-secondary/80 transition-colors
+        ${active ? 'text-primary' : textColor}`}
     >
       {icon}
-      <span className="flex-1 text-left">{label}</span>
+      <span className="flex-1 text-left truncate">{label}</span>
       {badge && (
-        <span className="px-2 py-0.5 rounded-full bg-primary/20 text-primary text-xs">
+        <span className="px-1.5 sm:px-2 py-0.5 rounded-full bg-primary/20 text-primary text-xs whitespace-nowrap flex-shrink-0">
           {badge}
         </span>
       )}
-      {hasSubmenu && <ChevronRight className="w-4 h-4 text-muted-foreground" />}
+      {hasSubmenu && <ChevronRight className={`w-3.5 sm:w-4 h-3.5 sm:h-4 ${mutedColor} flex-shrink-0`} />}
     </button>
   );
 
@@ -115,19 +118,19 @@ const SettingsMenu: React.FC<SettingsMenuProps> = ({
     <div ref={menuRef} className="relative">
       <button
         onClick={toggleMenu}
-        className="control-btn text-foreground hover:text-primary"
+        className={`control-btn ${textColor} hover:text-primary`}
         title="Settings"
       >
         <Settings className={`w-5 h-5 transition-transform duration-300 ${isOpen ? 'rotate-90' : ''}`} />
       </button>
 
       {isOpen && (
-        <div className="absolute bottom-full right-0 mb-2 w-64 bg-card border border-border rounded-xl shadow-2xl overflow-hidden animate-scale-in">
+        <div className="absolute bottom-full right-0 mb-2 w-56 sm:w-64 bg-card border border-border rounded-xl shadow-2xl overflow-hidden animate-scale-in max-h-[80vh] overflow-y-auto">
           {/* Main Menu */}
           {(subMenu === null || subMenu === 'main') && (
             <>
               <MenuItem
-                icon={<Sliders className="w-4 h-4" />}
+                icon={<Sliders className="w-3.5 sm:w-4 h-3.5 sm:h-4" />}
                 label="Equalizer"
                 onClick={() => {
                   onOpenEqualizer();
@@ -198,11 +201,11 @@ const SettingsMenu: React.FC<SettingsMenuProps> = ({
               <div className="flex items-center gap-2 px-4 py-2 border-b border-border">
                 <button
                   onClick={() => setSubMenu('main')}
-                  className="control-btn text-muted-foreground"
+                  className={`control-btn ${mutedColor}`}
                 >
                   <ChevronRight className="w-4 h-4 rotate-180" />
                 </button>
-                <span className="font-medium text-foreground">Subtitles</span>
+                <span className={`font-medium ${textColor}`}>Subtitles</span>
               </div>
               
               <MenuItem
@@ -249,20 +252,20 @@ const SettingsMenu: React.FC<SettingsMenuProps> = ({
               <div className="flex items-center gap-2 px-4 py-2 border-b border-border">
                 <button
                   onClick={() => setSubMenu('main')}
-                  className="control-btn text-muted-foreground"
+                  className={`control-btn ${mutedColor}`}
                 >
                   <ChevronRight className="w-4 h-4 rotate-180" />
                 </button>
-                <span className="font-medium text-foreground">A-B Loop</span>
+                <span className={`font-medium ${textColor}`}>A-B Loop</span>
               </div>
               
               <MenuItem
-                icon={<span className="w-4 h-4 flex items-center justify-center font-bold">A</span>}
+                icon={<span className={`w-4 h-4 flex items-center justify-center font-bold ${textColor}`}>A</span>}
                 label="Set Point A"
                 onClick={() => onSetABPoint('A')}
               />
               <MenuItem
-                icon={<span className="w-4 h-4 flex items-center justify-center font-bold">B</span>}
+                icon={<span className={`w-4 h-4 flex items-center justify-center font-bold ${textColor}`}>B</span>}
                 label="Set Point B"
                 onClick={() => onSetABPoint('B')}
               />
@@ -285,11 +288,11 @@ const SettingsMenu: React.FC<SettingsMenuProps> = ({
               <div className="flex items-center gap-2 px-4 py-2 border-b border-border">
                 <button
                   onClick={() => setSubMenu('main')}
-                  className="control-btn text-muted-foreground"
+                  className={`control-btn ${mutedColor}`}
                 >
                   <ChevronRight className="w-4 h-4 rotate-180" />
                 </button>
-                <span className="font-medium text-foreground">Sleep Timer</span>
+                <span className={`font-medium ${textColor}`}>Sleep Timer</span>
               </div>
               
               {sleepTimerEnabled ? (

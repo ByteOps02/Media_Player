@@ -14,6 +14,8 @@ import {
   ChevronLeft,
   ChevronRight,
   Clock,
+  Plus,
+  ListMusic,
 } from 'lucide-react';
 import VolumeControl from './VolumeControl';
 import SpeedControl from './SpeedControl';
@@ -37,6 +39,7 @@ interface PlayerControlsProps {
   onPlayPrevious: () => void;
   onToggleShuffle: () => void;
   onToggleRepeat: () => void;
+  onAddFiles: () => void;
   hasPlaylist: boolean;
   // Advanced features
   thumbnailGetter?: (time: number) => string | null;
@@ -59,6 +62,7 @@ interface PlayerControlsProps {
   onAddBookmark: () => void;
   onOpenBookmarks: () => void;
   onOpenRecentlyPlayed: () => void;
+  onOpenPlaylist: () => void;
 }
 
 const PlayerControls: React.FC<PlayerControlsProps> = ({
@@ -76,6 +80,7 @@ const PlayerControls: React.FC<PlayerControlsProps> = ({
   onPlayPrevious,
   onToggleShuffle,
   onToggleRepeat,
+  onAddFiles,
   hasPlaylist,
   thumbnailGetter,
   abLoop,
@@ -97,16 +102,18 @@ const PlayerControls: React.FC<PlayerControlsProps> = ({
   onAddBookmark,
   onOpenBookmarks,
   onOpenRecentlyPlayed,
+  onOpenPlaylist,
 }) => {
   const RepeatIcon = state.repeat === 'one' ? Repeat1 : Repeat;
+  const textColor = isVideo ? 'text-white/90 drop-shadow-md' : 'text-foreground';
 
   return (
     <div className={`
-      w-full px-4 py-4 transition-all duration-300
-      ${isVideo ? 'glass-strong' : 'bg-card border-t border-border'}
+      w-full px-3 sm:px-4 py-3 sm:py-5 transition-all duration-300
+      ${isVideo ? 'glass-strong' : 'glass'}
     `}>
       {/* Progress bar */}
-      <div className="mb-4">
+      <div className="mb-3 sm:mb-4">
         <ProgressBar
           currentTime={state.currentTime}
           duration={state.duration}
@@ -120,20 +127,39 @@ const PlayerControls: React.FC<PlayerControlsProps> = ({
       </div>
 
       {/* Controls */}
-      <div className="flex items-center justify-between gap-4">
+      <div className="flex items-center justify-between gap-2 sm:gap-4 flex-wrap">
         {/* Left controls */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1 order-1">
           <VolumeControl
             volume={state.volume}
             isMuted={state.isMuted}
             onVolumeChange={onVolumeChange}
             onToggleMute={onToggleMute}
+            isVideo={isVideo}
           />
           
+          {/* Add Files button */}
+          <button
+            onClick={onAddFiles}
+            className={`control-btn ${textColor} hover:text-primary transition-colors`}
+            title="Add Files"
+          >
+            <Plus className="w-5 h-5" />
+          </button>
+
+          {/* Playlist button */}
+          <button
+            onClick={onOpenPlaylist}
+            className={`control-btn ${textColor} hover:text-primary transition-colors`}
+            title="Playlist"
+          >
+            <ListMusic className="w-5 h-5" />
+          </button>
+
           {/* Recently Played button */}
           <button
             onClick={onOpenRecentlyPlayed}
-            className="control-btn text-foreground hover:text-primary"
+            className={`control-btn ${textColor} hover:text-primary transition-colors`}
             title="Recently Played"
           >
             <Clock className="w-5 h-5" />
@@ -141,76 +167,76 @@ const PlayerControls: React.FC<PlayerControlsProps> = ({
         </div>
 
         {/* Center controls */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1 sm:gap-2 order-2 sm:order-2">
+          {/* Previous */}
+          <button
+            onClick={onPlayPrevious}
+            className={`control-btn ${textColor} hover:text-primary transition-colors`}
+            title="Previous (B)"
+          >
+            <SkipBack className="w-5 sm:w-6 h-5 sm:h-6" />
+          </button>
+
           {/* Shuffle */}
           {hasPlaylist && (
             <button
               onClick={onToggleShuffle}
-              className={`control-btn ${state.shuffle ? 'text-primary' : 'text-foreground hover:text-primary'}`}
+              className={`control-btn transition-all hidden sm:flex ${state.shuffle ? 'text-primary scale-110 glow-accent-sm' : `${textColor} hover:text-primary`}`}
               title="Shuffle"
             >
               <Shuffle className="w-5 h-5" />
             </button>
           )}
 
-          {/* Previous */}
-          <button
-            onClick={onPlayPrevious}
-            className="control-btn text-foreground hover:text-primary"
-            title="Previous (B)"
-          >
-            <SkipBack className="w-6 h-6" />
-          </button>
-
           {/* Skip backward */}
           <button
             onClick={() => onSkip(-10)}
-            className="control-btn text-foreground hover:text-primary"
+            className={`control-btn ${textColor} hover:text-primary transition-colors hidden sm:flex gap-0.5`}
             title="Skip backward 10s (←)"
           >
-            <ChevronLeft className="w-5 h-5" />
+            <ChevronLeft className="w-4 sm:w-5 h-4 sm:h-5" />
             <span className="text-xs font-medium">10</span>
           </button>
 
           {/* Play/Pause */}
           <button
             onClick={onTogglePlay}
-            className="control-btn-primary relative"
+            className="control-btn-primary relative animate-scale-in"
             title={state.isPlaying ? 'Pause (Space)' : 'Play (Space)'}
           >
             {state.isLoading ? (
-              <Loader2 className="w-6 h-6 animate-spin" />
+              <Loader2 className="w-5 sm:w-6 h-5 sm:h-6 animate-spin" />
             ) : state.isPlaying ? (
-              <Pause className="w-6 h-6" />
+              <Pause className="w-5 sm:w-6 h-5 sm:h-6" />
             ) : (
-              <Play className="w-6 h-6 ml-0.5" />
+              <Play className="w-5 sm:w-6 h-5 sm:h-6 ml-0.5" />
             )}
           </button>
 
           {/* Skip forward */}
           <button
             onClick={() => onSkip(10)}
-            className="control-btn text-foreground hover:text-primary"
+            className={`control-btn ${textColor} hover:text-primary transition-colors hidden sm:flex gap-0.5`}
             title="Skip forward 10s (→)"
           >
             <span className="text-xs font-medium">10</span>
-            <ChevronRight className="w-5 h-5" />
+            <ChevronRight className="w-4 sm:w-5 h-4 sm:h-5" />
           </button>
 
           {/* Next */}
           <button
             onClick={onPlayNext}
-            className="control-btn text-foreground hover:text-primary"
+            className={`control-btn ${textColor} hover:text-primary transition-colors`}
             title="Next (N)"
           >
-            <SkipForward className="w-6 h-6" />
+            <SkipForward className="w-5 sm:w-6 h-5 sm:h-6" />
           </button>
 
           {/* Repeat */}
           {hasPlaylist && (
             <button
               onClick={onToggleRepeat}
-              className={`control-btn ${state.repeat !== 'none' ? 'text-primary' : 'text-foreground hover:text-primary'}`}
+              className={`control-btn transition-all hidden sm:flex ${state.repeat !== 'none' ? 'text-primary scale-110 glow-accent-sm' : `${textColor} hover:text-primary`}`}
               title={`Repeat: ${state.repeat}`}
             >
               <RepeatIcon className="w-5 h-5" />
@@ -219,10 +245,11 @@ const PlayerControls: React.FC<PlayerControlsProps> = ({
         </div>
 
         {/* Right controls */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1 order-3 sm:order-3">
           <SpeedControl
             playbackRate={state.playbackRate}
             onPlaybackRateChange={onPlaybackRateChange}
+            isVideo={isVideo}
           />
 
           {/* Settings Menu */}
@@ -251,7 +278,7 @@ const PlayerControls: React.FC<PlayerControlsProps> = ({
             <>
               <button
                 onClick={onTogglePiP}
-                className={`control-btn ${state.isPiP ? 'text-primary' : 'text-foreground hover:text-primary'}`}
+                className={`control-btn transition-all hidden sm:flex ${state.isPiP ? 'text-primary scale-110' : `${textColor} hover:text-primary`}`}
                 title="Picture-in-Picture (Shift+P)"
               >
                 <PictureInPicture className="w-5 h-5" />
@@ -259,7 +286,7 @@ const PlayerControls: React.FC<PlayerControlsProps> = ({
 
               <button
                 onClick={onToggleFullscreen}
-                className="control-btn text-foreground hover:text-primary"
+                className={`control-btn ${textColor} hover:text-primary transition-colors`}
                 title="Fullscreen (F)"
               >
                 {state.isFullscreen ? (

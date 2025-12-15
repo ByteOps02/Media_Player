@@ -6,6 +6,7 @@ interface VolumeControlProps {
   isMuted: boolean;
   onVolumeChange: (volume: number) => void;
   onToggleMute: () => void;
+  isVideo?: boolean;
 }
 
 const VolumeControl: React.FC<VolumeControlProps> = ({
@@ -13,6 +14,7 @@ const VolumeControl: React.FC<VolumeControlProps> = ({
   isMuted,
   onVolumeChange,
   onToggleMute,
+  isVideo = false,
 }) => {
   const [isHovering, setIsHovering] = useState(false);
 
@@ -27,15 +29,18 @@ const VolumeControl: React.FC<VolumeControlProps> = ({
     return <Volume2 className="w-5 h-5" />;
   };
 
+  const textColor = isVideo ? 'text-white/90 drop-shadow-md' : 'text-foreground';
+  const mutedColor = isVideo ? 'text-white/80 drop-shadow-md' : 'text-muted-foreground';
+
   return (
     <div
-      className="flex items-center gap-2 group"
+      className="flex items-center gap-1.5 sm:gap-2 group"
       onMouseEnter={() => setIsHovering(true)}
       onMouseLeave={() => setIsHovering(false)}
     >
       <button
         onClick={onToggleMute}
-        className="control-btn text-foreground hover:text-primary"
+        className={`btn-icon-secondary flex-shrink-0 ${textColor}`}
         title={isMuted ? 'Unmute' : 'Mute'}
       >
         <VolumeIcon />
@@ -43,11 +48,11 @@ const VolumeControl: React.FC<VolumeControlProps> = ({
 
       <div
         className={`
-          overflow-hidden transition-all duration-300 ease-out
-          ${isHovering ? 'w-24 opacity-100' : 'w-0 opacity-0'}
+          hidden sm:block overflow-hidden transition-all duration-300 ease-out
+          ${isHovering ? 'w-20 sm:w-24 opacity-100' : 'w-0 opacity-0'}
         `}
       >
-        <div className="relative w-24 h-1 rounded-full bg-player-progress-bg group-hover:h-1.5 transition-all">
+        <div className="relative w-20 sm:w-24 h-1 rounded-full bg-player-progress-bg group-hover:h-1.5 transition-all">
           {/* Volume level */}
           <div
             className="absolute top-0 left-0 h-full rounded-full bg-primary transition-all"
@@ -80,11 +85,11 @@ const VolumeControl: React.FC<VolumeControlProps> = ({
         </div>
       </div>
 
-      {/* Volume percentage */}
+      {/* Volume percentage - only show on hover on desktop */}
       <span
         className={`
-          text-xs text-muted-foreground font-medium min-w-[32px]
-          transition-all duration-300
+          hidden sm:inline text-xs font-medium min-w-[32px]
+          transition-all duration-300 ${mutedColor}
           ${isHovering ? 'opacity-100' : 'opacity-0'}
         `}
       >

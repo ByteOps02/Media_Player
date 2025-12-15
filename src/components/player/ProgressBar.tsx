@@ -95,7 +95,7 @@ const ProgressBar: React.FC<ProgressBarProps> = ({
         ref={progressRef}
         className={`
           relative w-full cursor-pointer rounded-full
-          transition-all duration-200
+          transition-all duration-200 ease-out
           ${isHovering || isDragging ? 'h-2' : 'h-1'}
         `}
         style={{ background: 'hsl(var(--player-progress-bg))' }}
@@ -108,7 +108,7 @@ const ProgressBar: React.FC<ProgressBarProps> = ({
         {/* A-B Loop region highlight */}
         {loopAPosition !== null && loopBPosition !== null && (
           <div
-            className="absolute top-0 h-full bg-primary/20 rounded-full"
+            className="absolute top-0 h-full bg-accent/30 rounded-full backdrop-blur-sm"
             style={{
               left: `${loopAPosition}%`,
               width: `${loopBPosition - loopAPosition}%`,
@@ -130,21 +130,22 @@ const ProgressBar: React.FC<ProgressBarProps> = ({
           className="absolute top-0 left-0 h-full rounded-full transition-[width] duration-75"
           style={{
             width: `${progress}%`,
-            background: 'hsl(var(--player-progress-active))',
+            background: 'linear-gradient(90deg, hsl(var(--primary)) 0%, hsl(var(--player-hover)) 100%)',
+            boxShadow: isDragging ? '0 0 15px hsl(var(--player-glow))' : 'none',
           }}
         />
 
         {/* A-B Loop markers */}
         {loopAPosition !== null && (
           <div
-            className="absolute top-1/2 -translate-y-1/2 w-3 h-3 rounded-full bg-primary border-2 border-background z-10"
+            className="absolute top-1/2 -translate-y-1/2 w-3 h-3 rounded-full bg-accent border-2 border-background z-10 shadow-lg"
             style={{ left: `calc(${loopAPosition}% - 6px)` }}
             title="Loop Point A"
           />
         )}
         {loopBPosition !== null && (
           <div
-            className="absolute top-1/2 -translate-y-1/2 w-3 h-3 rounded-full bg-primary border-2 border-background z-10"
+            className="absolute top-1/2 -translate-y-1/2 w-3 h-3 rounded-full bg-accent border-2 border-background z-10 shadow-lg"
             style={{ left: `calc(${loopBPosition}% - 6px)` }}
             title="Loop Point B"
           />
@@ -156,7 +157,7 @@ const ProgressBar: React.FC<ProgressBarProps> = ({
           return (
             <div
               key={index}
-              className="absolute top-0 w-0.5 h-full bg-yellow-400 z-10"
+              className="absolute top-0 w-0.5 h-full bg-yellow-400/70 z-10 hover:bg-yellow-300 transition-colors"
               style={{ left: `${position}%` }}
               title={`Bookmark: ${formatTime(time)}`}
             />
@@ -167,12 +168,12 @@ const ProgressBar: React.FC<ProgressBarProps> = ({
         <div
           className={`
             absolute top-1/2 -translate-y-1/2 w-4 h-4 rounded-full
-            bg-primary shadow-lg transition-all duration-200
+            bg-primary shadow-xl transition-all duration-200
             ${isHovering || isDragging ? 'opacity-100 scale-100' : 'opacity-0 scale-0'}
           `}
           style={{
             left: `calc(${progress}% - 8px)`,
-            boxShadow: '0 0 10px hsl(var(--player-glow))',
+            boxShadow: '0 0 15px hsl(var(--player-glow)), 0 0 30px hsl(var(--player-glow))',
           }}
         />
 
@@ -184,17 +185,17 @@ const ProgressBar: React.FC<ProgressBarProps> = ({
           >
             {/* Thumbnail preview */}
             {thumbnail && (
-              <div className="mb-2 rounded-lg overflow-hidden shadow-lg border border-border bg-background">
+              <div className="mb-2 rounded-lg overflow-hidden shadow-2xl border border-border/40 bg-background backdrop-blur-sm">
                 <img
                   src={thumbnail}
                   alt="Preview"
-                  className="w-40 h-auto"
+                  className="w-32 sm:w-40 h-auto"
                 />
               </div>
             )}
             
             {/* Time display */}
-            <div className="px-2 py-1 rounded bg-popover text-xs font-medium text-popover-foreground shadow-lg">
+            <div className="px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg bg-popover/95 backdrop-blur text-xs font-semibold text-popover-foreground shadow-xl border border-border/40">
               {formatTime(hoverTime)}
             </div>
           </div>
@@ -202,8 +203,8 @@ const ProgressBar: React.FC<ProgressBarProps> = ({
       </div>
 
       {/* Time display */}
-      <div className="flex justify-between mt-2 text-xs text-muted-foreground">
-        <span>{formatTime(currentTime)}</span>
+      <div className="flex justify-between mt-2 text-xs font-medium text-muted-foreground">
+        <span className="font-semibold text-primary">{formatTime(currentTime)}</span>
         <span>{formatTime(duration)}</span>
       </div>
     </div>

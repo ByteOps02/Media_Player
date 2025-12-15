@@ -68,13 +68,13 @@ const DropZone: React.FC<DropZoneProps> = ({ onFilesAdded, hasMedia }) => {
           `}
         >
           <div className="absolute inset-0 bg-background/80 backdrop-blur-sm" />
-          <div className="relative z-10 flex flex-col items-center gap-4 text-center p-8">
-            <div className="w-20 h-20 rounded-full bg-primary/20 flex items-center justify-center glow-accent">
-              <Upload className="w-10 h-10 text-primary" />
+          <div className="relative z-10 flex flex-col items-center gap-2 sm:gap-4 text-center p-4 sm:p-8">
+            <div className="w-16 sm:w-20 h-16 sm:h-20 rounded-full bg-primary/20 flex items-center justify-center glow-accent">
+              <Upload className="w-8 sm:w-10 h-8 sm:h-10 text-primary" />
             </div>
             <div>
-              <p className="text-xl font-semibold text-foreground">Drop to add to playlist</p>
-              <p className="text-sm text-muted-foreground mt-1">Release to add files</p>
+              <p className="text-lg sm:text-xl font-semibold text-foreground">Drop to add to playlist</p>
+              <p className="text-xs sm:text-sm text-muted-foreground mt-1">Release to add files</p>
             </div>
           </div>
         </div>
@@ -89,8 +89,8 @@ const DropZone: React.FC<DropZoneProps> = ({ onFilesAdded, hasMedia }) => {
       onDrop={handleDrop}
       onClick={handleClick}
       className={`
-        drop-zone flex flex-col items-center justify-center gap-6 p-12 cursor-pointer
-        min-h-[400px] transition-all duration-300
+        drop-zone flex flex-col items-center justify-center gap-3 sm:gap-6 p-6 sm:p-12 cursor-pointer
+        min-h-[300px] sm:min-h-[400px] transition-all duration-300
         ${isDragOver ? 'drop-zone-active' : 'hover:border-muted-foreground/50'}
       `}
     >
@@ -104,26 +104,26 @@ const DropZone: React.FC<DropZoneProps> = ({ onFilesAdded, hasMedia }) => {
       />
 
       <div className={`
-        w-24 h-24 rounded-full flex items-center justify-center
+        w-16 sm:w-24 h-16 sm:h-24 rounded-full flex items-center justify-center
         transition-all duration-300
         ${isDragOver ? 'bg-primary/20 glow-accent scale-110' : 'bg-secondary'}
       `}>
         <Upload className={`
-          w-12 h-12 transition-colors duration-300
+          w-8 sm:w-12 h-8 sm:h-12 transition-colors duration-300
           ${isDragOver ? 'text-primary' : 'text-muted-foreground'}
         `} />
       </div>
 
       <div className="text-center">
-        <h3 className="text-xl font-semibold text-foreground mb-2">
+        <h3 className="text-base sm:text-xl font-semibold text-foreground mb-1 sm:mb-2">
           {isDragOver ? 'Drop files here' : 'Drop media files or click to browse'}
         </h3>
-        <p className="text-sm text-muted-foreground max-w-md">
+        <p className="text-xs sm:text-sm text-muted-foreground max-w-md px-2">
           Supports MP4, WebM, MKV, AVI, MP3, WAV, FLAC, AAC, OGG and more
         </p>
       </div>
 
-      <div className="flex items-center gap-6 mt-4">
+      <div className="hidden sm:flex items-center gap-6 mt-2 sm:mt-4">
         <div className="flex items-center gap-2 text-muted-foreground">
           <FileVideo className="w-5 h-5" />
           <span className="text-sm">Video</span>
@@ -145,9 +145,9 @@ const DropZone: React.FC<DropZoneProps> = ({ onFilesAdded, hasMedia }) => {
           e.stopPropagation();
           handleClick();
         }}
-        className="mt-4 px-6 py-3 bg-primary text-primary-foreground rounded-lg font-medium
-          hover:bg-player-hover transition-colors duration-200 glow-accent-sm"
+        className="mt-4 sm:mt-6 btn-accent px-6 sm:px-8 py-2 sm:py-3 text-sm sm:text-base font-semibold flex items-center gap-2"
       >
+        <FolderOpen className="w-4 sm:w-5 h-4 sm:h-5" />
         Browse Files
       </button>
     </div>
