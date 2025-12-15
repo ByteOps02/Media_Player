@@ -1,6 +1,12 @@
 import React from 'react';
 import { X, Play, FileVideo, FileAudio, Trash2, ListMusic } from 'lucide-react';
-import type { MediaFile } from '@/hooks/useMediaPlayer';
+
+interface MediaFile {
+  id: string;
+  name: string;
+  type: 'video' | 'audio';
+  url: string;
+}
 
 interface PlaylistProps {
   playlist: MediaFile[];
@@ -29,47 +35,54 @@ const Playlist: React.FC<PlaylistProps> = ({
   return (
     <div className="flex flex-col h-full w-full">
       {/* Header */}
-      <div className="flex items-center justify-between px-3 py-2 gap-2 border-b border-white/5 bg-transparent sticky top-0 z-10">
-        <div className="flex items-center gap-2 min-w-0">
-          <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-primary to-accent flex items-center justify-center shadow-md flex-shrink-0">
-            <ListMusic className="w-3.5 h-3.5 text-primary-foreground" />
+      <div className="flex items-center justify-between px-4 py-3 gap-2 border-b border-transparent bg-transparent sticky top-0 z-10">
+        <div className="flex items-center gap-3 min-w-0">
+          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 flex items-center justify-center shadow-lg flex-shrink-0">
+            <ListMusic className="w-4 h-4 text-white" />
           </div>
           <div className="min-w-0">
-            <h2 className="font-bold text-sm text-foreground tracking-tight">Playlist</h2>
-            <span className="text-[10px] text-muted-foreground block -mt-0.5">
+            <h2 className="font-semibold text-base text-foreground tracking-tight">Playlist</h2>
+            <span className="text-xs text-muted-foreground/80 block -mt-0.5">
               {playlist.length} {playlist.length === 1 ? 'item' : 'items'}
             </span>
           </div>
         </div>
-        <div className="flex items-center gap-1 flex-shrink-0">
+        <div className="flex items-center gap-1 flex-shrink-0 mr-9">
           <button
             onClick={onClear}
-            className="btn-icon-secondary w-7 h-7"
+            className="control-btn text-white/90 drop-shadow-md hover:text-primary transition-all duration-200 flex items-center justify-center shadow-sm"
             title="Clear playlist"
           >
-            <Trash2 className="w-3.5 h-3.5" />
+            <Trash2 className="w-4 h-4" />
           </button>
         </div>
       </div>
 
       {/* Playlist items */}
-      <div className="flex-1 overflow-y-auto p-1">
+      <div className="flex-1 overflow-y-auto p-2">
         {playlist.map((media, index) => (
           <div
             key={media.id}
             onClick={() => onPlay(index)}
             className={`
-              playlist-item group rounded-md p-2 mb-1 last:mb-0 cursor-pointer flex items-center
-              ${index === currentIndex ? 'bg-primary/10 border-l-2 border-primary' : 'hover:bg-secondary/40'}
+              group rounded-lg p-2 mb-1.5 last:mb-0 cursor-pointer flex items-center transition-all duration-200
+              backdrop-blur-md border shadow-sm
+              ${index === currentIndex 
+                ? 'bg-transparent border-transparent' 
+                : 'bg-transparent border-transparent hover:bg-white/5 hover:border-white/10'
+              }
             `}
           >
             {/* Icon */}
             <div className={`
-              w-8 h-8 rounded-md flex items-center justify-center flex-shrink-0 transition-all
-              ${index === currentIndex ? 'bg-gradient-to-br from-primary to-accent text-primary-foreground shadow-md' : 'bg-secondary/40 text-muted-foreground group-hover:bg-secondary/60'}
+              w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 transition-all duration-200
+              ${index === currentIndex 
+                ? 'bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 text-white shadow-lg scale-105' 
+                : 'bg-white/5 text-muted-foreground group-hover:bg-white/10 group-hover:scale-105'
+              }
             `}>
               {index === currentIndex ? (
-                <Play className="w-3.5 h-3.5" />
+                <Play className="w-3.5 h-3.5 fill-current" />
               ) : media.type === 'video' ? (
                 <FileVideo className="w-3.5 h-3.5" />
               ) : (
@@ -78,14 +91,14 @@ const Playlist: React.FC<PlaylistProps> = ({
             </div>
 
             {/* Info */}
-            <div className="flex-1 min-w-0 ml-2">
+            <div className="flex-1 min-w-0 ml-2.5">
               <p className={`
-                text-xs font-semibold truncate transition-colors leading-tight
-                ${index === currentIndex ? 'text-primary' : 'text-foreground group-hover:text-primary'}
+                text-xs font-medium truncate transition-colors leading-tight
+                ${index === currentIndex ? 'text-white' : 'text-foreground group-hover:text-white'}
               `}>
                 {media.name.replace(/\.[^/.]+$/, '')}
               </p>
-              <p className="text-[10px] text-muted-foreground capitalize mt-0.5">
+              <p className="text-[10px] text-muted-foreground/70 capitalize mt-0.5">
                 {media.type}
               </p>
             </div>
@@ -96,7 +109,7 @@ const Playlist: React.FC<PlaylistProps> = ({
                 e.stopPropagation();
                 onRemove(media.id);
               }}
-              className="opacity-0 group-hover:opacity-100 p-1.5 rounded-md text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-all flex-shrink-0 ml-1"
+              className="opacity-0 group-hover:opacity-100 p-1.5 rounded-md bg-transparent hover:bg-red-500/20 text-white/90 drop-shadow-md hover:text-red-400 border border-transparent hover:border-red-500/30 transition-all duration-200 flex-shrink-0 ml-4"
               title="Remove from playlist"
             >
               <X className="w-3.5 h-3.5" />

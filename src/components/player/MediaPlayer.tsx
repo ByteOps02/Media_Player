@@ -329,7 +329,7 @@ const MediaPlayer: React.FC = () => {
 
       {/* Playlist Popover */}
       {showPlaylistModal && (
-        <div className="absolute bottom-24 left-4 z-50 w-80 max-h-[60vh] glass-strong rounded-xl overflow-hidden flex flex-col animate-in slide-in-from-bottom-5 fade-in duration-200">
+        <div className="absolute bottom-24 left-4 z-50 w-80 max-h-[60vh] rounded-xl overflow-hidden flex flex-col animate-in slide-in-from-bottom-5 fade-in duration-200">
           <button
             onClick={() => setShowPlaylistModal(false)}
             className="absolute top-2 right-2 z-20 control-btn text-muted-foreground hover:text-foreground bg-background/50 rounded-full p-1"
