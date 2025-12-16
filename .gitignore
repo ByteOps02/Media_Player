@@ -1,4 +1,6 @@
+# ======================
 # Logs
+# ======================
 logs
 *.log
 npm-debug.log*
@@ -7,22 +9,48 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-node_modules
-dist
-dist-ssr
-*.local
+# ======================
+# Dependencies
+# ======================
+node_modules/
 
-# Editor directories and files
+# ======================
+# Build outputs
+# ======================
+dist/
+dist-ssr/
+dist-electron/
+build/
+release/
+build-release/
+out/
+
+# ======================
+# Electron binaries
+# ======================
+*.exe
+*.msi
+*.dmg
+*.AppImage
+
+# ======================
+# Environment files
+# ======================
+*.local
+.env
+.env.*
+
+# ======================
+# Editor / OS files
+# ======================
 .vscode/*
 !.vscode/extensions.json
-.idea
+.idea/
 .DS_Store
+Thumbs.db
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
 *.sw?
-
-# Electron
-dist-electron
-release
+video.mp4

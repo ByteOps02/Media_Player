@@ -1,125 +1,211 @@
 # 🎬 Aura Media Player
 
-A modern, feature-rich media player built with React and TypeScript. Play video and audio files with advanced controls, playlist management, and a beautiful glassmorphism UI design. Fully responsive across desktop, tablet, and mobile devices.
+<div align="center">
 
-![React](https://img.shields.io/badge/React-18+-blue?logo=react)
-![TypeScript](https://img.shields.io/badge/TypeScript-5.0+-blue?logo=typescript)
-![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.4+-blue?logo=tailwindcss)
-![Vite](https://img.shields.io/badge/Vite-5.4+-blue?logo=vite)
-![License](https://img.shields.io/badge/License-MIT-green)
+**A modern, feature-rich desktop media player built with React, TypeScript, and Electron**
+
+A beautifully designed, fully-responsive media player that combines native desktop capabilities with web technology. Experience seamless playback of your local video and audio files with professional-grade features.
+
+[![Electron](https://img.shields.io/badge/Electron-30+-47848F?style=for-the-badge&logo=electron&logoColor=white)](https://www.electronjs.org/)
+[![React](https://img.shields.io/badge/React-18+-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://react.dev/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.0+-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Vite](https://img.shields.io/badge/Vite-5.0+-646CFF?style=for-the-badge&logo=vite&logoColor=white)](https://vitejs.dev/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.4+-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
+[![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
+
+[Features](#-features) • [Getting Started](#-getting-started) • [Documentation](#-documentation) • [Contributing](#-contributing)
+
+</div>
+
+---
+
+## 📋 Table of Contents
+
+- [Features](#-features)
+- [System Requirements](#-system-requirements)
+- [Getting Started](#-getting-started)
+- [Usage & Keyboard Shortcuts](#-usage--keyboard-shortcuts)
+- [Project Architecture](#-project-architecture)
+- [Technology Stack](#-technology-stack)
+- [Documentation](#-documentation)
+- [Troubleshooting](#-troubleshooting)
+- [Contributing](#-contributing)
+- [License](#-license)
 
 ---
 
 ## ✨ Features
 
-### 🎵 Core Playback
-- **Multi-Format Support** - MP4, WebM, MKV, AVI, MOV, MP3, WAV, FLAC, AAC, OGG, M4A, WMA
-- **Playlist Management** - Add, remove, clear, and organize multiple files seamlessly
-- **Play/Pause & Navigation** - Play, pause, next, previous, skip controls
-- **Shuffle & Repeat** - Shuffle playlist or repeat single/all tracks
-- **Adjustable Speed** - 8 playback speed options (0.25x, 0.5x, 0.75x, 1x, 1.25x, 1.5x, 1.75x, 2x)
-- **Volume Control** - Adjustable volume with mute toggle and visual feedback
-- **Progress Tracking** - Seek bar with current/total time display and buffering indicator
+### 🖥️ Desktop Experience
+- **Native Application** - Standalone executable for Windows (macOS/Linux coming soon)
+- **System Integration** - Native file dialogs and file explorer integration
+- **Drag & Drop** - Seamlessly drag media files from your file explorer
+- **Offline Ready** - Full functionality without internet connection
+- **Multi-window Support** - Open multiple instances for side-by-side playback
+
+### 🎵 Playback & Media Support
+
+**Format Support:**
+- **Video:** MP4, WebM, MKV, AVI, MOV, M4V
+- **Audio:** MP3, WAV, FLAC, AAC, OGG, M4A, WMA
+- **Subtitles:** SRT, VTT (with customizable rendering)
+
+**Playback Controls:**
+- Play/Pause, Next, Previous, Seek
+- 8 Speed Options (0.25x - 2x)
+- Shuffle & Repeat modes
+- Volume control with mute
+- Real-time buffering indicator
 
 ### 🎚️ Advanced Audio Features
-- **10-Band Equalizer** - Professional audio equalization with 10 frequency bands (32Hz-16kHz)
-- **Audio Presets** - 10 preset selections: Flat, Bass Boost, Treble Boost, Rock, Pop, Jazz, Classical, Electronic, Vocal, Bass Only
-- **Real-time Audio Processing** - Web Audio API integration for live EQ adjustments
-- **Independent EQ Control** - Toggle equalizer on/off without affecting playback
 
-### 📺 Video-Specific Features
-- **Fullscreen Mode** - True fullscreen playback with floating playlist overlay
-- **Picture-in-Picture** - Floating window mode for multitasking
-- **Video Thumbnails** - Auto-generated preview thumbnails on seek bar hover
-- **Screenshot Capture** - Capture video frames as PNG images
-- **Subtitle Support** - Load and display SRT and VTT subtitle files with customization:
-  - Font size adjustment (small, medium, large)
-  - Position toggle (top/bottom)
-  - Enable/disable subtitles on-the-fly
+| Feature | Details |
+|---------|---------|
+| **10-Band Equalizer** | Professional audio shaping (32Hz - 16kHz) |
+| **Presets** | 10 curated presets (Bass Boost, Rock, Pop, Jazz, Classical, Electronic, Vocal, etc.) |
+| **Real-time Processing** | Web Audio API integration for live adjustments |
+| **Audio Visualizer** | Dynamic waveform visualization during playback |
 
-### ⏱️ Time & Loop Control
-- **A-B Loop** - Set loop points A and B for repeated section playback
-- **Sleep Timer** - Auto-stop playback after 15, 30, 45, 60, 90, or 120 minutes
-- **Time Tracking** - Display remaining sleep timer duration
+### 📺 Video & Visual Features
 
-### 🔖 User Organization
-- **Bookmarks** - Create bookmarks at specific timestamps for quick navigation
-- **Recently Played** - Automatic tracking of recently played media with resume functionality
-- **Persistent Storage** - Save playback position and history across sessions
+| Feature | Details |
+|---------|---------|
+| **Fullscreen Mode** | True fullscreen with floating playlist overlay |
+| **Picture-in-Picture** | Compact floating window for multitasking |
+| **Video Thumbnails** | Auto-generated previews on hover (seek bar) |
+| **Screenshot Capture** | Save video frames as PNG images |
+| **Subtitle Support** | SRT/VTT files with size & position customization |
+| **Dark/Light Theme** | Toggle between modes or follow system preference |
 
-### 🎨 User Interface & Experience
-- **Glassmorphism Design** - Modern frosted glass effect with backdrop blur on all surfaces
-- **Theme System** - Light/Dark/System modes with smooth transitions
-- **Persistent Theme** - Theme preference saved to localStorage
-- **Responsive Design** - Fully optimized for:
-  - Mobile phones (320px+)
-  - Tablets (641px - 1024px)
-  - Desktop (1025px+)
-- **Touch-Friendly** - Optimized touch targets and mobile-first layout
-- **Keyboard Shortcuts** - Extensive keyboard support for power users
-- **Smooth Animations** - Polished transitions and micro-interactions throughout
+### 🛠️ Productivity Features
 
-### 📦 Playlist Features
-- **Drag & Drop** - Drag files directly into the player
-- **File Browser** - Browse and select files from your system
-- **Current Track Highlight** - Visual indicator for the playing track
-- **Remove/Clear Options** - Remove individual tracks or clear entire playlist
+| Feature | Benefit |
+|---------|---------|
+| **A-B Loop** | Perfect for musicians, dancers, language learners |
+| **Sleep Timer** | Auto-stop after 15, 30, 45, 60, 90, or 120 minutes |
+| **Bookmarks** | Save favorite timestamps for quick navigation |
+| **Recently Played** | Auto-tracked history with resume functionality |
+| **Playlist Management** | Organize, remove, or clear media files |
+
+### 🎨 User Interface
+
+- **Glassmorphism Design** - Modern frosted glass aesthetic with backdrop blur
+- **Responsive Layout** - Mobile-optimized UI (works on tablets too)
+- **Dark/Light Modes** - System-aware theme switching with persistent storage
+- **Smooth Animations** - Polished transitions and micro-interactions
+- **Accessibility** - Keyboard navigation and screen reader support
 
 ---
 
-## 🚀 Quick Start
+## 🖥️ System Requirements
 
-### Prerequisites
-- **Node.js** 18 or higher
-- **npm** 9+ or **yarn** 4+
+### Minimum
+- **Windows:** Windows 10 or later (64-bit)
+- **RAM:** 2GB
+- **Disk Space:** 250MB for installation
 
-### Installation
+### Recommended
+- **Windows:** Windows 11 (latest build)
+- **RAM:** 4GB or more
+- **SSD:** For faster file access
 
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/ByteOps02/Media_Player.git
-   cd Media_Player
-   ```
+### Development
+- **Node.js:** 18.0 or higher
+- **npm:** 9.0 or higher
+- **Git:** Latest version
 
-2. **Install dependencies**
-   ```bash
-   npm install
-   ```
+---
 
-3. **Start development server**
-   ```bash
-   npm run dev
-   ```
-   The player will be available at `http://localhost:8080`
+## 🚀 Getting Started
 
-### Build for Production
+### Installation (Desktop Users)
 
+1. Download the latest installer from [Releases](https://github.com/ByteOps02/Media_Player/releases)
+2. Run `Media Player Setup x.x.x.exe`
+3. Follow the installation wizard
+4. Launch from Start Menu or Desktop shortcut
+
+### Development Setup (Developers)
+
+#### Clone Repository
 ```bash
-# Build optimized production bundle
-npm run build
-
-# Preview production build locally
-npm run preview
-
-# Build as Electron app (Windows installer)
-npm run electron:build
+git clone https://github.com/ByteOps02/Media_Player.git
+cd Media_Player
 ```
 
+#### Install Dependencies
+```bash
+npm install
+```
+
+#### Start Development
+```bash
+npm run dev
+```
+This launches the app with hot-reload enabled. Perfect for development and testing.
+
+#### Build Production Release
+```bash
+npm run build              # Build web assets
+npm run electron:build     # Create Windows installer
+```
+
+**Output:** Find your installer in `build-release/[version]/`
+
 ---
 
-## 🎮 Keyboard Shortcuts
+## 🎮 Usage & Keyboard Shortcuts
 
-| Key | Action |
-|-----|--------|
+### Opening Media Files
+
+**Method 1: Drag & Drop**
+- Simply drag video or audio files into the player window
+- Or drag entire folders to load all compatible media
+
+**Method 2: File Browser**
+- Click "Browse Files" button in the player
+- Select one or more files
+- Files are added to the playlist
+
+**Method 3: Command Line** (Dev mode)
+```bash
+npm run dev -- path/to/media.mp4
+```
+
+### Keyboard Shortcuts
+
+#### Playback Control
+| Shortcut | Action |
+|----------|--------|
 | **Space** | Play/Pause |
-| **F** | Fullscreen (video) |
-| **Shift+P** | Picture-in-Picture (video) |
-| **→** | Skip forward 10 seconds |
-| **←** | Skip backward 10 seconds |
-| **N** | Next track |
-| **B** | Previous track |
+| **Ctrl+N** | Next Track |
+| **Ctrl+B** | Previous Track |
+| **→** | Seek forward 10s |
+| **←** | Seek backward 10s |
+
+#### Volume & Audio
+| Shortcut | Action |
+|----------|--------|
 | **M** | Mute/Unmute |
-| **↑/↓** | Increase/Decrease volume |
+| **↑** | Volume up (+5%) |
+| **↓** | Volume down (-5%) |
+| **+** | Speed up (+0.25x) |
+| **-** | Speed down (-0.25x) |
+
+#### Video Control
+| Shortcut | Action |
+|----------|--------|
+| **F** | Fullscreen |
+| **Shift+P** | Picture-in-Picture |
+| **Esc** | Exit Fullscreen |
+| **T** | Toggle Theme |
+
+#### Features
+| Shortcut | Action |
+|----------|--------|
+| **E** | Toggle Equalizer |
+| **S** | Toggle Subtitles |
+| **H** | Show/Hide This Help |
 
 ---
 
@@ -128,293 +214,344 @@ npm run electron:build
 ### Directory Structure
 
 ```
-src/
-├── components/
-│   ├── player/                      # Main player components
-│   │   ├── MediaPlayer.tsx          # Main player orchestrator
-│   │   ├── PlayerControls.tsx       # Control bar with all buttons
-│   │   ├── Playlist.tsx             # Playlist sidebar management
-│   │   ├── ProgressBar.tsx          # Seek bar with thumbnails
-│   │   ├── VolumeControl.tsx        # Volume slider
-│   │   ├── SpeedControl.tsx         # Playback speed selector
-│   │   ├── Equalizer.tsx            # 10-band equalizer UI
-│   │   ├── SettingsMenu.tsx         # Advanced settings menu
-│   │   ├── DropZone.tsx             # File upload & drag-drop area
-│   │   ├── AudioVisualizer.tsx      # Audio waveform visualization
-│   │   ├── SubtitleDisplay.tsx      # Subtitle rendering
-│   │   ├── BookmarksPanel.tsx       # Bookmarks management modal
-│   │   ├── RecentlyPlayedPanel.tsx  # Recently played files modal
-│   │   └── ... (other components)
-│   ├── ThemeToggle.tsx              # Light/Dark/System theme switcher
-│   ├── NavLink.tsx                  # Navigation component
-│   └── ui/                          # shadcn/ui component library
-│       ├── button.tsx, card.tsx, dialog.tsx, etc.
-│       └── ... (30+ pre-built UI components)
-├── hooks/                           # Custom React hooks
-│   ├── useMediaPlayer.ts            # Core media playback logic
-│   │                                 # - File management
-│   │                                 # - Playback state
-│   │                                 # - Format detection
-│   ├── useEqualizer.ts              # Audio equalizer logic
-│   │                                 # - Web Audio API integration
-│   │                                 # - 10 preset configurations
-│   ├── useSubtitles.ts              # Subtitle parsing & display
-│   │                                 # - SRT/VTT format support
-│   │                                 # - Time synchronization
-│   ├── useAdvancedFeatures.ts       # A-B loop, sleep timer, bookmarks
-│   ├── useRecentlyPlayed.ts         # Recently played tracking
-│   ├── useVideoThumbnails.ts        # Thumbnail generation
-│   ├── use-mobile.tsx               # Mobile detection hook
-│   └── use-toast.ts                 # Toast notification hook
-├── context/
-│   └── ThemeContext.tsx             # Global theme management
-├── pages/
-│   ├── Index.tsx                    # Main player page
-│   └── NotFound.tsx                 # 404 page
-├── lib/
-│   └── utils.ts                     # Utility functions
-├── App.tsx                          # Root component with theme provider
-├── App.css                          # Component-specific styles
-├── index.css                        # Global styles with theme variables
-└── main.tsx                         # React entry point
+Media_Player/
+├── electron/                          # Electron main process
+│   ├── main.ts                        # App entry point
+│   └── preload.ts                     # IPC bridge
+├── src/
+│   ├── components/
+│   │   ├── player/                    # Player components
+│   │   │   ├── MediaPlayer.tsx        # Main orchestrator
+│   │   │   ├── PlayerControls.tsx     # Control bar
+│   │   │   ├── Playlist.tsx           # Playlist sidebar
+│   │   │   ├── ProgressBar.tsx        # Seek bar w/ preview
+│   │   │   ├── VolumeControl.tsx      # Volume slider
+│   │   │   ├── SpeedControl.tsx       # Speed selector
+│   │   │   ├── Equalizer.tsx          # 10-band EQ
+│   │   │   ├── SettingsMenu.tsx       # Advanced options
+│   │   │   ├── SubtitleDisplay.tsx    # Subtitle renderer
+│   │   │   ├── BookmarksPanel.tsx     # Bookmarks modal
+│   │   │   ├── RecentlyPlayedPanel.tsx# History modal
+│   │   │   └── AudioVisualizer.tsx    # Waveform display
+│   │   ├── ThemeToggle.tsx            # Theme switcher
+│   │   ├── NavLink.tsx                # Navigation component
+│   │   └── ui/                        # shadcn/ui library
+│   │       ├── button.tsx, card.tsx, dialog.tsx...
+│   │       └── ... (30+ components)
+│   ├── hooks/                         # Custom React hooks
+│   │   ├── useMediaPlayer.ts          # Core playback logic
+│   │   ├── useEqualizer.ts            # Audio processing
+│   │   ├── useSubtitles.ts            # Subtitle parsing
+│   │   ├── useAdvancedFeatures.ts     # A-B loop, timer, bookmarks
+│   │   ├── useRecentlyPlayed.ts       # History tracking
+│   │   ├── useVideoThumbnails.ts      # Thumbnail generation
+│   │   ├── use-mobile.tsx             # Responsive detection
+│   │   └── use-toast.ts               # Notifications
+│   ├── context/
+│   │   └── ThemeContext.tsx           # Global theme state
+│   ├── pages/
+│   │   ├── Index.tsx                  # Main player page
+│   │   └── NotFound.tsx               # 404 page
+│   ├── lib/
+│   │   └── utils.ts                   # Helper utilities
+│   ├── App.tsx                        # Root component
+│   ├── App.css                        # Component styles
+│   ├── index.css                      # Global styles + themes
+│   └── main.tsx                       # React entry point
+├── public/                            # Static assets
+│   └── robots.txt
+├── dist/                              # Built assets (generated)
+├── dist-electron/                     # Built main process (generated)
+├── build-release/                     # Final installers (generated)
+├── vite.config.ts                     # Vite configuration
+├── tsconfig.json                      # TypeScript config
+├── tailwind.config.ts                 # Tailwind theme
+├── eslint.config.js                   # Code quality rules
+├── package.json                       # Dependencies & scripts
+└── README.md                          # This file
 ```
 
-### Component Hierarchy
+### Architecture Diagram
 
 ```
-App (with ThemeContext)
-└── MediaPlayer
-    ├── Header
-    │   ├── Logo & Title
-    │   ├── ThemeToggle
-    │   └── Mobile Playlist Toggle
-    ├── Media Display Area
-    │   ├── Video Element / Audio Visualizer
-    │   ├── DropZone (overlay)
-    │   └── SubtitleDisplay
-    ├── PlayerControls
-    │   ├── ProgressBar
-    │   ├── Control Buttons (Play, Skip, etc)
-    │   ├── VolumeControl
-    │   ├── SpeedControl
-    │   └── SettingsMenu
-    └── Sidebars
-        ├── Desktop Playlist (lg:flex, desktop)
-        ├── Mobile Playlist Overlay (mobile overlay)
-        ├── Fullscreen Playlist Overlay (floating)
-        ├── Equalizer Modal
-        ├── BookmarksPanel Modal
-        └── RecentlyPlayedPanel Modal
+Electron Main Process
+├── Window Management
+├── File System Access
+└── Native APIs
+        ↓
+    IPC Bridge
+        ↓
+React Renderer (Vite)
+├── Components (TSX)
+├── State (Hooks)
+├── Styling (Tailwind)
+└── Web APIs (Audio, Video)
 ```
 
 ---
 
 ## 🛠️ Technology Stack
 
-| Category | Technology | Purpose |
-|----------|-----------|---------|
-| **Framework** | React 18+ | UI component framework |
-| **Language** | TypeScript 5.0+ | Type-safe development |
-| **Build Tool** | Vite 5.4+ | Fast bundling & dev server |
-| **Styling** | Tailwind CSS 3.4+ | Utility-first CSS framework |
-| **UI Library** | shadcn/ui | High-quality React components |
-| **Icons** | Lucide React | Modern icon library |
-| **Notifications** | Sonner | Toast notifications |
-| **Routing** | React Router | Client-side routing |
-| **State Management** | React Hooks (useState, useContext) | Built-in state management |
-| **Audio API** | Web Audio API | Audio equalizer & processing |
+### Frontend Framework
+- **React 18+** - Component-based UI with hooks
+- **TypeScript 5.0+** - Type-safe development
+- **Vite 5.4+** - Lightning-fast bundler and dev server
+
+### Styling & UI
+- **Tailwind CSS 3.4+** - Utility-first CSS framework
+- **PostCSS 8+** - CSS processing
+- **shadcn/ui** - 30+ pre-built, accessible components
+- **Lucide React** - 1000+ beautiful icons
+
+### Media & Audio
+- **Web Audio API** - Real-time audio processing
+- **HTML5 Media Elements** - Native video/audio support
+- **Canvas API** - Thumbnail generation and visualizer
+
+### Desktop
+- **Electron 30+** - Cross-platform desktop framework
+- **electron-builder** - Installer creation
+
+### State & Utilities
+- **React Router** - Client-side routing
+- **Sonner** - Toast notifications
+- **Custom Hooks** - Encapsulated business logic
 
 ---
 
-## 🎨 Design System
+## 📚 Documentation
 
-### Theme Implementation
-- **CSS Variables** - Dynamic theming using CSS custom properties
-- **Light Mode** - Light blue palette with proper contrast ratios
-- **Dark Mode** - Navy blue palette (default) with cyan/blue accents
-- **System Detection** - Respects system preference via `prefers-color-scheme`
-- **Persistent Storage** - Theme preference saved to localStorage
+### For Users
 
-### Visual Design
-- **Glassmorphism** - Frosted glass effect with `backdrop-blur` and semi-transparent backgrounds
-- **Gradient Accents** - Smooth linear and radial gradients throughout
-- **Color Palette**:
-  - Primary: Cyan/Blue (`hsl(210, 100%, 55%)`)
-  - Secondary: Navy (`hsl(210, 20%, 16%)`)
-  - Accent: Purple (`hsl(275, 100%, 55%)`)
-  - Background: Very Dark Blue (`hsl(210, 25%, 4%)`)
-- **Responsive Typography** - Scales from mobile to desktop
-- **Smooth Animations** - Fade, scale, and slide transitions
+#### Getting Started
+1. **Installation:** See [Getting Started](#-getting-started) section above
+2. **First Run:** Drag and drop a media file to start playing
+3. **Keyboard Shortcuts:** See [Keyboard Shortcuts](#-usage--keyboard-shortcuts) section
 
-### Responsive Breakpoints
-- **Mobile**: 0-640px
-- **Tablet**: 641px-1024px
-- **Desktop**: 1025px+
+#### Features Guide
 
----
+**Playing Media:**
+- Use drag-and-drop or the "Browse Files" button
+- Files are added to the playlist (right sidebar)
+- Click a file to play it
 
-## 📱 Browser Support
+**Adjusting Audio:**
+- Use volume slider on bottom left
+- Open equalizer for 10-band EQ adjustments
+- Select from 10 presets or customize manually
 
-| Browser | Version | Status |
-|---------|---------|--------|
-| Chrome/Chromium | 90+ | ✅ Full Support |
-| Edge | 90+ | ✅ Full Support |
-| Firefox | 88+ | ✅ Full Support |
-| Safari | 14+ | ✅ Full Support |
-| Mobile Chrome | Latest | ✅ Full Support |
-| Mobile Safari (iOS) | 14+ | ✅ Full Support |
+**Video Options:**
+- **Fullscreen:** Press F or click fullscreen button
+- **Thumbnails:** Hover over seek bar to preview
+- **Subtitles:** Load SRT/VTT files via settings menu
 
----
+**Advanced:**
+- **A-B Loop:** Set start and end points (great for learning)
+- **Sleep Timer:** Auto-stop after a set duration
+- **Bookmarks:** Save timestamps for favorite moments
 
-## 🔧 Development
+### For Developers
 
-### Available Scripts
+#### Setting Up Dev Environment
 
 ```bash
-npm run dev        # Start Vite dev server with hot reload
-npm run build      # Build optimized production bundle
-npm run build:dev  # Build for development (debugging)
-npm run preview    # Preview production build locally
-npm run lint       # Run ESLint code quality checks
-npm run electron:build  # Build as Windows executable
+# Install Node.js 18+
+# Clone and install
+git clone https://github.com/ByteOps02/Media_Player.git
+cd Media_Player
+npm install
+
+# Start development
+npm run dev
 ```
 
-### Configuration Files
+#### Running Tests & Linting
 
-- **`vite.config.ts`** - Vite build configuration
-- **`tsconfig.json`** - TypeScript compiler options
-- **`tailwind.config.ts`** - Tailwind CSS theme customization
-- **`eslint.config.js`** - Code quality rules
-- **`postcss.config.js`** - PostCSS plugins for Tailwind
-- **`components.json`** - shadcn/ui component registry
+```bash
+# Check code quality
+npm run lint
 
-### Environment
+# Fix formatting issues
+npm run lint -- --fix
+```
 
-- **Node Modules** - Dependencies managed via npm
-- **Source Maps** - Debug-friendly production builds
-- **Tree Shaking** - Unused code elimination
-- **Lazy Loading** - Code splitting for optimal performance
+#### Building & Distribution
+
+```bash
+# Production build
+npm run build
+npm run electron:build
+
+# Clean build
+rm -rf dist dist-electron
+npm run build
+npm run electron:build
+```
+
+#### Key Technologies to Understand
+
+1. **Electron** - Main & Renderer process communication
+2. **React Hooks** - State management (useState, useEffect, useContext)
+3. **Web Audio API** - For equalizer and visualizer
+4. **TypeScript** - Type definitions for safety
+5. **Tailwind CSS** - Utility classes for responsive design
+
+#### Adding New Features
+
+**Example: Adding a new audio preset**
+
+1. Edit `src/hooks/useEqualizer.ts`
+2. Add to `EQUALIZER_PRESETS` array
+3. Preset automatically appears in Equalizer UI
+
+**Example: Adding a keyboard shortcut**
+
+1. Edit `src/components/player/MediaPlayer.tsx`
+2. Add listener in `useEffect`
+3. Call appropriate handler function
 
 ---
 
-## 🎯 Key Features Implementation
+## 🐛 Troubleshooting
 
-### Media Format Detection
-```typescript
-// Supports both video and audio formats
-const VIDEO_EXTENSIONS = ['.mp4', '.webm', '.mkv', '.avi', '.mov', '.m4v'];
-const AUDIO_EXTENSIONS = ['.mp3', '.wav', '.flac', '.aac', '.ogg', '.m4a', '.wma'];
+### Common Issues
+
+#### **App Won't Launch**
+```
+Error: Cannot find module...
+```
+**Solution:**
+```bash
+rm -rf node_modules package-lock.json
+npm install
+npm run dev
 ```
 
-### State Management
-```typescript
-// Core player state
-PlayerState: {
-  isPlaying, currentTime, duration, volume, isMuted,
-  playbackRate, isFullscreen, isPiP, isLoading,
-  buffered, shuffle, repeat
-}
+#### **Build Fails on Windows**
+```
+Error: editbin not found...
+```
+**Solution:** Ensure Visual C++ Build Tools are installed. If already installed:
+```bash
+npm run electron:build --verbose
 ```
 
-### Advanced Features
-- **Equalizer**: 10-band peaking filters with Web Audio API
-- **A-B Loop**: Automatic looping between two timestamps
-- **Sleep Timer**: Countdown with auto-pause functionality
-- **Bookmarks**: Array of timestamps for quick navigation
-- **Subtitles**: SRT/VTT parsing with HTML tag stripping
-- **Thumbnails**: Canvas-based frame capture and caching
+#### **White Screen on Launch**
+**Solution:**
+1. Open DevTools: `Ctrl+Shift+I`
+2. Check Console for errors
+3. Ensure `vite.config.ts` has `base: './'`
+4. Verify `electron/main.ts` points to correct dist path
 
----
+#### **Media Files Not Loading**
+**Solution:**
+- Check file format is supported (see [Features](#-features))
+- Ensure file path contains no special characters
+- Try different file to isolate the issue
 
-## 📄 File Formats Supported
+#### **Equalizer Not Working**
+**Solution:**
+1. Toggle equalizer OFF then ON
+2. Check browser console for Web Audio API errors
+3. Ensure audio context is initialized
 
-### Video
-- **MP4** (.mp4, .m4v)
-- **WebM** (.webm)
-- **Matroska** (.mkv)
-- **AVI** (.avi)
-- **MOV** (.mov)
+### Getting Help
 
-### Audio
-- **MP3** (.mp3)
-- **WAV** (.wav)
-- **FLAC** (.flac)
-- **AAC** (.aac)
-- **OGG** (.ogg)
-- **M4A** (.m4a)
-- **WMA** (.wma)
-
-### Subtitles
-- **SRT** (.srt)
-- **WebVTT** (.vtt)
+- **GitHub Issues:** [Report a bug](https://github.com/ByteOps02/Media_Player/issues)
+- **Discussions:** [Ask a question](https://github.com/ByteOps02/Media_Player/discussions)
+- **Documentation:** Check relevant section above
 
 ---
 
 ## 🤝 Contributing
 
-Contributions are welcome! Here's how you can help:
+We love contributions! Here's how to help:
 
-1. **Fork the repository**
-2. **Create a feature branch** (`git checkout -b feature/amazing-feature`)
-3. **Commit your changes** (`git commit -m 'Add amazing feature'`)
-4. **Push to the branch** (`git push origin feature/amazing-feature`)
-5. **Open a Pull Request**
+### Report Bugs
+1. Check if issue already exists
+2. Describe the bug clearly with steps to reproduce
+3. Include OS, Node version, and error messages
+4. Provide screenshots if applicable
 
-Please ensure:
-- Code follows the existing style
-- TypeScript types are properly defined
-- Components are responsive
-- Features work across browsers
+### Suggest Features
+1. Describe the feature and use case
+2. Explain why it would be useful
+3. Provide mockups or examples if possible
+
+### Submit Code
+1. Fork the repository
+2. Create a feature branch:
+   ```bash
+   git checkout -b feature/amazing-feature
+   ```
+3. Make your changes and commit:
+   ```bash
+   git commit -m 'Add amazing feature'
+   ```
+4. Push to branch:
+   ```bash
+   git push origin feature/amazing-feature
+   ```
+5. Open a Pull Request with description
+
+### Code Guidelines
+- Follow existing code style
+- Use TypeScript for all code
+- Add comments for complex logic
+- Test your changes thoroughly
+- Update documentation if needed
 
 ---
 
 ## 📄 License
 
-This project is licensed under the **MIT License** - see the LICENSE file for details.
+This project is licensed under the **MIT License** - see [LICENSE](LICENSE) file for details.
 
 ```
 MIT License
 
-Copyright © 2025 Media Player
+Copyright (c) 2025 Media Player Contributors
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
 in the Software without restriction, including without limitation the rights
 to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software...
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
 ```
 
 ---
 
-## 📞 Support & Feedback
+## 📞 Support
 
-- **Issues**: Open an issue on GitHub for bugs and feature requests
-- **Discussions**: Share ideas and discuss improvements
-- **Email**: user@example.com
+- **Issues & Bug Reports:** [GitHub Issues](https://github.com/ByteOps02/Media_Player/issues)
+- **Feature Requests:** [GitHub Discussions](https://github.com/ByteOps02/Media_Player/discussions)
+- **Email:** [user@example.com](mailto:user@example.com)
 
 ---
 
 ## 🎉 Acknowledgments
 
-- Built with [React](https://react.dev)
-- Styled with [Tailwind CSS](https://tailwindcss.com)
-- Components from [shadcn/ui](https://ui.shadcn.com)
-- Icons from [Lucide React](https://lucide.dev)
-- Bundled with [Vite](https://vitejs.dev)
+Built with modern web technologies by the community:
+
+- [React](https://react.dev) - UI Framework
+- [TypeScript](https://www.typescriptlang.org/) - Type Safety
+- [Vite](https://vitejs.dev) - Build Tool
+- [Tailwind CSS](https://tailwindcss.com) - Styling
+- [shadcn/ui](https://ui.shadcn.com) - Components
+- [Electron](https://www.electronjs.org/) - Desktop Framework
 
 ---
 
-## 🚀 Performance Metrics
+<div align="center">
 
-- **Build Size**: ~250KB (gzipped)
-- **Load Time**: <1s on modern connections
-- **Audio Processing**: Real-time Web Audio API
-- **Video Playback**: Hardware-accelerated when available
-- **Memory**: Efficient thumbnail caching
-- **Responsive**: Touch-optimized for mobile
+### ⭐ If you find this project helpful, please consider giving it a star!
 
----
+**Built with ❤️ for better media experience**
 
-**Built with ❤️ for a better media experience**
+Last Updated: December 2025 | Version: 0.0.0
 
-Last Updated: December 2025
+</div>
