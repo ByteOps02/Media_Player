@@ -33,6 +33,7 @@ interface SettingsMenuProps {
   onCancelSleepTimer: () => void;
   onAddBookmark: () => void;
   onOpenBookmarks: () => void;
+  onMenuToggle?: (isOpen: boolean) => void;
 }
 
 const SLEEP_TIMER_OPTIONS = [15, 30, 45, 60, 90, 120];
@@ -62,10 +63,17 @@ const SettingsMenu: React.FC<SettingsMenuProps> = ({
   onCancelSleepTimer,
   onAddBookmark,
   onOpenBookmarks,
+  onMenuToggle,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [subMenu, setSubMenu] = useState<'main' | 'subtitles' | 'sleepTimer' | 'abLoop' | null>(null);
   const menuRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (onMenuToggle) {
+      onMenuToggle(isOpen);
+    }
+  }, [isOpen, onMenuToggle]);
 
   const textColor = isVideo ? 'text-white/90 drop-shadow-md' : 'text-foreground';
   const mutedColor = isVideo ? 'text-white/70 drop-shadow-sm' : 'text-muted-foreground';

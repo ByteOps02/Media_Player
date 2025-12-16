@@ -63,6 +63,7 @@ interface PlayerControlsProps {
   onOpenBookmarks: () => void;
   onOpenRecentlyPlayed: () => void;
   onOpenPlaylist: () => void;
+  onSettingsOpenChange?: (isOpen: boolean) => void;
 }
 
 const PlayerControls: React.FC<PlayerControlsProps> = ({
@@ -103,6 +104,7 @@ const PlayerControls: React.FC<PlayerControlsProps> = ({
   onOpenBookmarks,
   onOpenRecentlyPlayed,
   onOpenPlaylist,
+  onSettingsOpenChange,
 }) => {
   const RepeatIcon = state.repeat === 'one' ? Repeat1 : Repeat;
   const textColor = isVideo ? 'text-white/90 drop-shadow-md' : 'text-foreground';
@@ -272,6 +274,7 @@ const PlayerControls: React.FC<PlayerControlsProps> = ({
             onCancelSleepTimer={onCancelSleepTimer}
             onAddBookmark={onAddBookmark}
             onOpenBookmarks={onOpenBookmarks}
+            onMenuToggle={onSettingsOpenChange}
           />
 
           {isVideo && (

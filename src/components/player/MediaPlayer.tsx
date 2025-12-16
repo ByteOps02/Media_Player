@@ -70,6 +70,7 @@ const MediaPlayer: React.FC = () => {
 
   const [showPlaylistModal, setShowPlaylistModal] = useState(false);
   const [controlsVisible, setControlsVisible] = useState(true);
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const controlsTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const isVideo = currentMedia?.type === 'video';
@@ -117,7 +118,7 @@ const MediaPlayer: React.FC = () => {
 
   // Auto-hide controls for video
   useEffect(() => {
-    if (!isVideo || !state.isPlaying || showPlaylistModal || showEqualizer || showRecentlyPlayed || showBookmarks) {
+    if (!isVideo || !state.isPlaying || showPlaylistModal || showEqualizer || showRecentlyPlayed || showBookmarks || isSettingsOpen) {
       setControlsVisible(true);
       return;
     }
@@ -134,7 +135,7 @@ const MediaPlayer: React.FC = () => {
     return () => {
       if (controlsTimeoutRef.current) clearTimeout(controlsTimeoutRef.current);
     };
-  }, [isVideo, state.isPlaying, showPlaylistModal, showEqualizer, showRecentlyPlayed, showBookmarks]);
+  }, [isVideo, state.isPlaying, showPlaylistModal, showEqualizer, showRecentlyPlayed, showBookmarks, isSettingsOpen]);
 
   const handleMouseMove = () => {
     if (isVideo) {
@@ -322,6 +323,7 @@ const MediaPlayer: React.FC = () => {
               onAddBookmark={handleAddBookmark}
               onOpenBookmarks={() => setShowBookmarks(true)}
               onOpenRecentlyPlayed={() => setShowRecentlyPlayed(true)}
+              onSettingsOpenChange={setIsSettingsOpen}
             />
           </div>
         )}
