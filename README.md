@@ -1,4 +1,4 @@
-# 🎬 Aura Media Player
+# 🎬 Media Player
 
 A modern, feature-rich media player built with React and TypeScript. Play video and audio files with advanced controls, playlist management, and a beautiful glassmorphism UI design.
 
