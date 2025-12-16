@@ -112,8 +112,8 @@ const SettingsMenu: React.FC<SettingsMenuProps> = ({
         e.stopPropagation();
         onClick?.();
       }}
-      className={`w-full flex items-center gap-2 sm:gap-3 px-3 sm:px-4 py-2 sm:py-2.5 text-xs sm:text-sm hover:bg-secondary/80 transition-colors cursor-pointer
-        ${active ? 'text-primary' : textColor}`}
+      className={`w-full flex items-center gap-2 sm:gap-3 px-3 sm:px-4 py-2 sm:py-2.5 text-xs sm:text-sm hover:bg-white/20 transition-colors cursor-pointer
+        ${active ? 'text-primary bg-primary/10' : textColor}`}
     >
       {icon}
       <span className="flex-1 text-left truncate">{label}</span>
@@ -137,7 +137,7 @@ const SettingsMenu: React.FC<SettingsMenuProps> = ({
       </button>
 
       {isOpen && (
-        <div className="absolute bottom-full right-0 mb-2 w-56 sm:w-64 glass-strong rounded-xl shadow-2xl overflow-hidden animate-scale-in max-h-[80vh] overflow-y-auto z-50">
+        <div className="absolute bottom-full right-0 mb-2 w-56 sm:w-64 rounded-xl shadow-2xl overflow-hidden animate-scale-in max-h-[80vh] overflow-y-auto z-50 bg-transparent border border-white/20">
           {/* Main Menu */}
           {(subMenu === null || subMenu === 'main') && (
             <>

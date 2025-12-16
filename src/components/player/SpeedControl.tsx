@@ -50,7 +50,7 @@ const SpeedControl: React.FC<SpeedControlProps> = ({
 
       {isOpen && (
         <div className="absolute bottom-full right-0 mb-2 
-          glass rounded-lg py-2 min-w-[130px] animate-scale-in shadow-xl border border-border/30 backdrop-blur-md">
+          rounded-lg py-2 min-w-[130px] animate-scale-in shadow-2xl border border-white/20 bg-transparent">
           <div className={`px-3 py-1.5 text-xs font-semibold uppercase tracking-wider ${mutedColor}`}>
             Playback Speed
           </div>
@@ -63,8 +63,8 @@ const SpeedControl: React.FC<SpeedControlProps> = ({
               }}
               className={`
                 w-full px-3 py-2 text-left text-sm transition-colors duration-150
-                hover:bg-secondary/70 flex items-center justify-between font-medium
-                ${playbackRate === speed ? 'text-primary bg-primary/10' : textColor}
+                hover:bg-white/20 flex items-center justify-between font-medium
+                ${playbackRate === speed ? 'text-primary bg-primary/20' : textColor}
               `}
             >
               <span>{formatSpeed(speed)}</span>

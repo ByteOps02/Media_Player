@@ -33,7 +33,7 @@ const Playlist: React.FC<PlaylistProps> = ({
   onClose,
 }) => {
   return (
-    <div className="h-full w-full flex flex-col glass rounded-2xl overflow-hidden animate-scale-in backdrop-blur-md">
+    <div className="h-full w-full flex flex-col rounded-2xl overflow-hidden animate-scale-in bg-transparent border border-white/20">
       {/* Header */}
       <div className="px-5 py-4 border-b border-white/5 flex items-center justify-between">
         <div className="flex items-center gap-3">
