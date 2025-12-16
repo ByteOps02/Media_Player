@@ -13,6 +13,7 @@ import SubtitleDisplay from './SubtitleDisplay';
 import Equalizer from './Equalizer';
 import RecentlyPlayedPanel from './RecentlyPlayedPanel';
 import BookmarksPanel from './BookmarksPanel';
+import SubtitleSettings from './SubtitleSettings';
 import ThemeToggle from '@/components/ThemeToggle';
 import { Image, X } from 'lucide-react';
 import { toast } from 'sonner';
@@ -345,16 +346,7 @@ const MediaPlayer: React.FC = () => {
             currentIndex={currentIndex}
             onPlay={(index) => {
               playIndex(index);
-              // Optional: Keep playlist open after selecting? Or close?
-              // Standard behavior is usually to keep open or close depending on UX.
-              // User said "list appears in the centre... better to display it just top of playlist button".
-              // Usually popovers close on selection if it's a menu, but for playlist it might be better to stay open.
-              // I'll leave it open for now or follow previous logic?
-              // Previous logic was `setShowPlaylistModal(false)`.
-              // I'll keep it closing on play for now, but user can reopen easily.
-              // Actually, for a playlist, you might want to see what's next.
-              // I will remove `setShowPlaylistModal(false)` here so it acts like a panel.
-               playIndex(index);
+              setShowPlaylistModal(false);
             }}
             onRemove={removeFromPlaylist}
             onClear={clearPlaylist}
@@ -404,6 +396,17 @@ const MediaPlayer: React.FC = () => {
           onRemove={advancedFeatures.removeBookmark}
           onClear={advancedFeatures.clearBookmarks}
           onClose={() => setShowBookmarks(false)}
+        />
+      )}
+
+      {/* Subtitle Settings Modal */}
+      {showSubtitleSettings && (
+        <SubtitleSettings
+          fontSize={subtitles.fontSize}
+          position={subtitles.position}
+          onFontSizeChange={subtitles.setFontSize}
+          onPositionChange={subtitles.setPosition}
+          onClose={() => setShowSubtitleSettings(false)}
         />
       )}
     </div>
