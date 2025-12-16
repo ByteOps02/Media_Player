@@ -107,8 +107,9 @@ const SettingsMenu: React.FC<SettingsMenuProps> = ({
     badge?: string;
   }> = ({ icon, label, onClick, hasSubmenu, active, badge }) => (
     <button
+      type="button"
       onClick={onClick}
-      className={`w-full flex items-center gap-2 sm:gap-3 px-3 sm:px-4 py-2 sm:py-2.5 text-xs sm:text-sm hover:bg-secondary/80 transition-colors
+      className={`w-full flex items-center gap-2 sm:gap-3 px-3 sm:px-4 py-2 sm:py-2.5 text-xs sm:text-sm hover:bg-secondary/80 transition-colors cursor-pointer
         ${active ? 'text-primary' : textColor}`}
     >
       {icon}
@@ -133,7 +134,7 @@ const SettingsMenu: React.FC<SettingsMenuProps> = ({
       </button>
 
       {isOpen && (
-        <div className="absolute bottom-full right-0 mb-2 w-56 sm:w-64 glass-strong rounded-xl shadow-2xl overflow-hidden animate-scale-in max-h-[80vh] overflow-y-auto">
+        <div className="absolute bottom-full right-0 mb-2 w-56 sm:w-64 glass-strong rounded-xl shadow-2xl overflow-hidden animate-scale-in max-h-[80vh] overflow-y-auto z-50">
           {/* Main Menu */}
           {(subMenu === null || subMenu === 'main') && (
             <>
