@@ -1,14 +1,14 @@
 import React from 'react';
-import type { SubtitleState } from '@/hooks/useSubtitles';
+import type { Subtitle } from '@/hooks/useSubtitles';
 
 interface SubtitleDisplayProps {
-  subtitle: SubtitleState['currentSubtitle'];
+  subtitle: Subtitle | null;
   isEnabled: boolean;
-  fontSize: SubtitleState['fontSize'];
-  position: SubtitleState['position'];
+  fontSize: 'small' | 'medium' | 'large';
+  position: 'bottom' | 'top';
 }
 
-const fontSizeMap = {
+const fontSizeMap: Record<SubtitleDisplayProps['fontSize'], string> = {
   small: 'text-sm md:text-base',
   medium: 'text-base md:text-xl',
   large: 'text-xl md:text-2xl',

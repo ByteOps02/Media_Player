@@ -15,7 +15,7 @@ import RecentlyPlayedPanel from './RecentlyPlayedPanel';
 import BookmarksPanel from './BookmarksPanel';
 import SubtitleSettings from './SubtitleSettings';
 import ThemeToggle from '@/components/ThemeToggle';
-import { Image, X } from 'lucide-react';
+import { Image } from 'lucide-react';
 import { toast } from 'sonner';
 
 const MediaPlayer: React.FC = () => {

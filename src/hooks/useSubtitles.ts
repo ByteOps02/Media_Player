@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect, useRef } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 
 export interface Subtitle {
   id: number;
@@ -7,9 +7,7 @@ export interface Subtitle {
   text: string;
 }
 
-export interface SubtitleState {
-  subtitles: Subtitle[];
-  currentSubtitle: Subtitle | null;
+export interface SubtitleSettings {
   isEnabled: boolean;
   fontSize: 'small' | 'medium' | 'large';
   position: 'bottom' | 'top';
@@ -112,9 +110,8 @@ const parseVTT = (content: string): Subtitle[] => {
 };
 
 export const useSubtitles = (currentTime: number) => {
-  const [state, setState] = useState<SubtitleState>({
-    subtitles: [],
-    currentSubtitle: null,
+  const [subtitles, setSubtitles] = useState<Subtitle[]>([]);
+  const [settings, setSettings] = useState<SubtitleSettings>({
     isEnabled: true,
     fontSize: 'medium',
     position: 'bottom',
@@ -122,68 +119,58 @@ export const useSubtitles = (currentTime: number) => {
 
   // Load subtitle file
   const loadSubtitle = useCallback(async (file: File) => {
-    const content = await file.text();
-    const ext = file.name.toLowerCase().slice(file.name.lastIndexOf('.'));
-    
-    let subtitles: Subtitle[] = [];
-    
-    if (ext === '.srt') {
-      subtitles = parseSRT(content);
-    } else if (ext === '.vtt') {
-      subtitles = parseVTT(content);
-    }
+    try {
+      const content = await file.text();
+      const ext = file.name.toLowerCase().slice(file.name.lastIndexOf('.'));
+      
+      let parsedSubtitles: Subtitle[] = [];
+      
+      if (ext === '.srt') {
+        parsedSubtitles = parseSRT(content);
+      } else if (ext === '.vtt') {
+        parsedSubtitles = parseVTT(content);
+      }
 
-    setState((prev) => ({
-      ...prev,
-      subtitles,
-      currentSubtitle: null,
-    }));
+      setSubtitles(parsedSubtitles);
+    } catch (error) {
+      console.error("Failed to load subtitles:", error);
+    }
   }, []);
 
   // Clear subtitles
   const clearSubtitles = useCallback(() => {
-    setState((prev) => ({
-      ...prev,
-      subtitles: [],
-      currentSubtitle: null,
-    }));
+    setSubtitles([]);
   }, []);
 
   // Toggle subtitle visibility
   const toggleSubtitles = useCallback(() => {
-    setState((prev) => ({ ...prev, isEnabled: !prev.isEnabled }));
+    setSettings((prev) => ({ ...prev, isEnabled: !prev.isEnabled }));
   }, []);
 
   // Set font size
   const setFontSize = useCallback((fontSize: 'small' | 'medium' | 'large') => {
-    setState((prev) => ({ ...prev, fontSize }));
+    setSettings((prev) => ({ ...prev, fontSize }));
   }, []);
 
   // Set position
   const setPosition = useCallback((position: 'bottom' | 'top') => {
-    setState((prev) => ({ ...prev, position }));
+    setSettings((prev) => ({ ...prev, position }));
   }, []);
 
-  // Update current subtitle based on time
-  useEffect(() => {
-    if (state.subtitles.length === 0) {
-      if (state.currentSubtitle !== null) {
-        setState((prev) => ({ ...prev, currentSubtitle: null }));
-      }
-      return;
-    }
-
-    const current = state.subtitles.find(
+  // Calculate current subtitle
+  const currentSubtitle = useMemo(() => {
+    if (subtitles.length === 0) return null;
+    return subtitles.find(
       (sub) => currentTime >= sub.start && currentTime <= sub.end
-    );
-
-    if (current?.id !== state.currentSubtitle?.id) {
-      setState((prev) => ({ ...prev, currentSubtitle: current || null }));
-    }
-  }, [currentTime, state.subtitles, state.currentSubtitle, state.currentSubtitle?.id]);
+    ) || null;
+  }, [currentTime, subtitles]);
 
   return {
-    ...state,
+    subtitles,
+    currentSubtitle,
+    isEnabled: settings.isEnabled,
+    fontSize: settings.fontSize,
+    position: settings.position,
     loadSubtitle,
     clearSubtitles,
     toggleSubtitles,

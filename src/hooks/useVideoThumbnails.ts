@@ -64,7 +64,7 @@ export const useVideoThumbnails = (videoSrc: string | undefined, duration: numbe
       if (abortRef.current) break;
 
       try {
-        await new Promise<void>((resolve, reject) => {
+        await new Promise<void>((resolve) => {
           const onSeeked = () => {
             video.removeEventListener('seeked', onSeeked);
             video.removeEventListener('error', onError);

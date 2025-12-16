@@ -31,8 +31,8 @@ const ProgressBar: React.FC<ProgressBarProps> = ({
 
   const progress = duration > 0 ? (currentTime / duration) * 100 : 0;
   const bufferedProgress = duration > 0 ? (buffered / duration) * 100 : 0;
-  const loopAPosition = abLoopPointA !== null && duration > 0 ? (abLoopPointA / duration) * 100 : null;
-  const loopBPosition = abLoopPointB !== null && duration > 0 ? (abLoopPointB / duration) * 100 : null;
+  const loopAPosition = (abLoopPointA !== undefined && abLoopPointA !== null) && duration > 0 ? (abLoopPointA / duration) * 100 : null;
+  const loopBPosition = (abLoopPointB !== undefined && abLoopPointB !== null) && duration > 0 ? (abLoopPointB / duration) * 100 : null;
 
   const calculateTime = useCallback((e: React.MouseEvent | MouseEvent) => {
     if (!progressRef.current || duration <= 0) return 0;

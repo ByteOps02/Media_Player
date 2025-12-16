@@ -31,9 +31,11 @@ function createWindow() {
   win = new BrowserWindow({
     width: 1200,
     height: 800,
-    icon: path.join(process.env.VITE_PUBLIC, 'favicon.ico'), // Try to use a favicon if available
+    icon: path.join(process.env.VITE_PUBLIC || '', 'favicon.ico'), // Try to use a favicon if available
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
+      contextIsolation: true,
+      nodeIntegration: false,
     },
   })
 

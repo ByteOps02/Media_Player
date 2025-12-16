@@ -1,5 +1,5 @@
 import React from 'react';
-import { X, Play, FileVideo, FileAudio, Trash2, ListMusic, Upload } from 'lucide-react';
+import { X, Play, FileVideo, FileAudio, Trash2, ListMusic } from 'lucide-react';
 
 export interface MediaFile {
   id: string;
@@ -25,7 +25,7 @@ const Playlist: React.FC<PlaylistProps> = ({
   onRemove,
   onClear,
   onClose,
-  onAddFiles
+  // onAddFiles
 }) => {
   return (
     <div className="h-full w-full flex flex-col relative overflow-hidden bg-background/40 backdrop-blur-3xl border-l border-white/10">

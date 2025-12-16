@@ -26,6 +26,9 @@ export interface PlayerState {
 
 const VIDEO_EXTENSIONS = ['.mp4', '.webm', '.mkv', '.avi', '.mov', '.m4v'];
 const AUDIO_EXTENSIONS = ['.mp3', '.wav', '.flac', '.aac', '.ogg', '.m4a', '.wma'];
+const SKIP_SECONDS = 10;
+const VOLUME_STEP = 0.1;
+const RESTART_THRESHOLD = 3;
 
 export const getMediaType = (filename: string): 'video' | 'audio' | null => {
   const ext = filename.toLowerCase().slice(filename.lastIndexOf('.'));
@@ -68,6 +71,15 @@ export const useMediaPlayer = () => {
   });
 
   const currentMedia = currentIndex >= 0 ? playlist[currentIndex] : null;
+  const playlistRef = useRef(playlist);
+  playlistRef.current = playlist;
+
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      playlistRef.current.forEach((m) => URL.revokeObjectURL(m.url));
+    };
+  }, []);
 
   // Add files to playlist
   const addFiles = useCallback((files: FileList | File[]) => {
@@ -211,7 +223,7 @@ export const useMediaPlayer = () => {
     if (playlist.length === 0) return;
     
     // If more than 3 seconds in, restart current track
-    if (state.currentTime > 3) {
+    if (state.currentTime > RESTART_THRESHOLD) {
       seek(0);
       return;
     }
@@ -219,6 +231,8 @@ export const useMediaPlayer = () => {
     const prevIndex = currentIndex - 1 < 0 ? playlist.length - 1 : currentIndex - 1;
     setCurrentIndex(prevIndex);
   }, [playlist.length, currentIndex, state.currentTime, seek]);
+
+  // Toggle shuffle
 
   // Toggle shuffle
   const toggleShuffle = useCallback(() => {
@@ -355,19 +369,19 @@ export const useMediaPlayer = () => {
           break;
         case 'ArrowLeft':
           e.preventDefault();
-          skip(-10);
+          skip(-SKIP_SECONDS);
           break;
         case 'ArrowRight':
           e.preventDefault();
-          skip(10);
+          skip(SKIP_SECONDS);
           break;
         case 'ArrowUp':
           e.preventDefault();
-          setVolume(state.volume + 0.1);
+          setVolume(state.volume + VOLUME_STEP);
           break;
         case 'ArrowDown':
           e.preventDefault();
-          setVolume(state.volume - 0.1);
+          setVolume(state.volume - VOLUME_STEP);
           break;
         case 'KeyM':
           toggleMute();
@@ -414,8 +428,8 @@ export const useMediaPlayer = () => {
     navigator.mediaSession.setActionHandler('pause', togglePlay);
     navigator.mediaSession.setActionHandler('previoustrack', playPrevious);
     navigator.mediaSession.setActionHandler('nexttrack', playNext);
-    navigator.mediaSession.setActionHandler('seekbackward', () => skip(-10));
-    navigator.mediaSession.setActionHandler('seekforward', () => skip(10));
+    navigator.mediaSession.setActionHandler('seekbackward', () => skip(-SKIP_SECONDS));
+    navigator.mediaSession.setActionHandler('seekforward', () => skip(SKIP_SECONDS));
   }, [currentMedia, togglePlay, playPrevious, playNext, skip]);
 
   return {
