@@ -1,238 +1,185 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { X, Play, FileVideo, FileAudio, Trash2, ListMusic, Upload } from 'lucide-react';
 
-interface MediaFile {
+export interface MediaFile {
   id: string;
   name: string;
   type: 'video' | 'audio';
   url: string;
 }
 
-const AppleGlassPlaylist = () => {
-  const [playlist, setPlaylist] = useState<MediaFile[]>([
-    { id: '1', name: 'Summer Vibes.mp4', type: 'video', url: '#' },
-    { id: '2', name: 'Morning Acoustic.mp3', type: 'audio', url: '#' },
-    { id: '3', name: 'City Lights.mp4', type: 'video', url: '#' },
-    { id: '4', name: 'Jazz Lounge.mp3', type: 'audio', url: '#' },
-  ]);
-  const [currentIndex, setCurrentIndex] = useState(0);
+interface PlaylistProps {
+  playlist: MediaFile[];
+  currentIndex: number;
+  onPlay: (index: number) => void;
+  onRemove: (id: string) => void;
+  onClear: () => void;
+  onClose?: () => void;
+  onAddFiles?: () => void; // Optional prop if we want to add "Add" button support later, or just remove the button
+}
 
-  const handlePlay = (index: number) => {
-    setCurrentIndex(index);
-  };
-
-  const handleRemove = (id: string) => {
-    const newPlaylist = playlist.filter(item => item.id !== id);
-    setPlaylist(newPlaylist);
-    if (currentIndex >= newPlaylist.length) {
-      setCurrentIndex(Math.max(0, newPlaylist.length - 1));
-    }
-  };
-
-  const handleClear = () => {
-    setPlaylist([]);
-    setCurrentIndex(0);
-  };
-
-  const handleAddMedia = () => {
-    const newMedia: MediaFile = {
-      id: Date.now().toString(),
-      name: `New Track ${playlist.length + 1}.mp3`,
-      type: Math.random() > 0.5 ? 'audio' : 'video',
-      url: '#'
-    };
-    setPlaylist([...playlist, newMedia]);
-  };
-
+const Playlist: React.FC<PlaylistProps> = ({
+  playlist,
+  currentIndex,
+  onPlay,
+  onRemove,
+  onClear,
+  onClose,
+  onAddFiles
+}) => {
   return (
-    <div className="min-h-screen w-full flex items-center justify-center p-8 relative overflow-hidden">
-      {/* Animated Gradient Background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-purple-600 via-pink-500 to-orange-500 opacity-80"></div>
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.1),transparent_50%)]"></div>
+    <div className="h-full w-full flex flex-col relative overflow-hidden bg-background/40 backdrop-blur-3xl border-l border-white/10">
       
-      {/* Floating Elements for Depth */}
-      <div className="absolute top-20 left-20 w-64 h-64 bg-white/10 rounded-full blur-3xl animate-pulse"></div>
-      <div className="absolute bottom-20 right-20 w-96 h-96 bg-purple-500/20 rounded-full blur-3xl animate-pulse delay-1000"></div>
+      {/* Ambient Background Effects */}
+      <div className="absolute top-[-20%] right-[-20%] w-[80%] h-[50%] bg-purple-500/10 rounded-full blur-[100px] pointer-events-none"></div>
+      <div className="absolute bottom-[-20%] left-[-20%] w-[80%] h-[50%] bg-blue-500/10 rounded-full blur-[100px] pointer-events-none"></div>
 
-      {/* Main Playlist Container */}
-      <div className="relative w-full max-w-md h-[400px]">
-        <div className="absolute inset-0 bg-white/5 backdrop-blur-3xl rounded-3xl border border-white/20 shadow-[0_8px_32px_0_rgba(0,0,0,0.37)]"></div>
-        
-        <div className="relative h-full flex flex-col rounded-3xl overflow-hidden">
-          {/* Header with Glassmorphism */}
-          <div className="px-4 py-3 backdrop-blur-xl bg-white/2 border-b border-white/10 flex items-center justify-between">
-            <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-purple-500/30 to-pink-500/30 backdrop-blur-xl border border-white/20 flex items-center justify-center shadow-lg">
-                <ListMusic className="w-4 h-4 text-white" />
-              </div>
-              <div>
-                <h2 className="text-sm font-semibold text-white tracking-tight">My Playlist</h2>
-                <p className="text-[10px] text-white/70 font-medium">
-                  {playlist.length} {playlist.length === 1 ? 'Track' : 'Tracks'}
-                </p>
-              </div>
+      {/* Header */}
+      <div className="px-5 py-6 flex flex-col gap-4 relative z-10">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary/20 to-purple-500/20 backdrop-blur-xl border border-white/10 flex items-center justify-center shadow-lg">
+              <ListMusic className="w-5 h-5 text-primary" />
             </div>
-            <div className="flex items-center gap-1.5">
-              <button
-                onClick={handleAddMedia}
-                className="p-2 rounded-lg backdrop-blur-xl bg-white/10 hover:bg-white/20 border border-white/20 text-white hover:scale-105 transition-all duration-200 shadow-lg"
-                title="Add Track"
-              >
-                <Upload className="w-3.5 h-3.5" />
-              </button>
-              {playlist.length > 0 && (
-                <button
-                  onClick={handleClear}
-                  className="p-2 rounded-lg backdrop-blur-xl bg-white/10 hover:bg-red-500/30 border border-white/20 text-white hover:text-red-300 hover:scale-105 transition-all duration-200 shadow-lg"
-                  title="Clear Playlist"
-                >
-                  <Trash2 className="w-3.5 h-3.5" />
-                </button>
-              )}
+            <div>
+              <h2 className="text-lg font-bold text-foreground tracking-tight">Playlist</h2>
+              <p className="text-xs text-muted-foreground font-medium">
+                {playlist.length} {playlist.length === 1 ? 'Track' : 'Tracks'}
+              </p>
             </div>
           </div>
-
-          {/* Playlist Items */}
-          <div className="flex-1 overflow-y-auto p-3 space-y-1.5">
-            {playlist.length === 0 ? (
-              <div className="h-full flex flex-col items-center justify-center text-white/70 space-y-3">
-                <div className="w-16 h-16 rounded-2xl bg-white/10 backdrop-blur-xl border border-white/20 flex items-center justify-center">
-                  <ListMusic className="w-7 h-7 opacity-40" />
-                </div>
-                <div className="text-center">
-                  <p className="text-sm font-medium">Your playlist is empty</p>
-                  <p className="text-xs text-white/50 mt-1">Add tracks to get started</p>
-                </div>
-              </div>
-            ) : (
-              playlist.map((media, index) => {
-                const isActive = index === currentIndex;
-                return (
-                  <div
-                    key={media.id}
-                    onClick={() => handlePlay(index)}
-                    className={`
-                      group relative flex items-center gap-2.5 p-2.5 rounded-xl cursor-pointer
-                      transition-all duration-300 backdrop-blur-xl
-                      ${
-                        isActive
-                          ? 'bg-white/10 border border-white/15 shadow-[0_8px_32px_0_rgba(0,0,0,0.2)] scale-[1.02]'
-                          : 'bg-white/2 border border-white/5 hover:bg-white/5 hover:border-white/10 hover:scale-[1.01]'
-                      }
-                    `}
-                  >
-                    {/* Icon Container */}
-                    <div
-                      className={`
-                        w-9 h-9 rounded-lg flex items-center justify-center shrink-0 transition-all duration-300
-                        backdrop-blur-xl border
-                        ${
-                          isActive
-                            ? 'bg-gradient-to-br from-purple-500/50 to-pink-500/50 border-white/20 shadow-[0_0_20px_rgba(168,85,247,0.4)]'
-                            : 'bg-white/5 border-white/10 group-hover:bg-white/10'
-                        }
-                      `}
-                    >
-                      {isActive ? (
-                        <Play className="w-3.5 h-3.5 fill-white text-white ml-0.5" />
-                      ) : media.type === 'video' ? (
-                        <FileVideo className="w-4 h-4 text-white/80" />
-                      ) : (
-                        <FileAudio className="w-4 h-4 text-white/80" />
-                      )}
-                    </div>
-
-                    {/* Track Info */}
-                    <div className="flex-1 min-w-0">
-                      <p
-                        className={`text-xs font-semibold truncate transition-colors ${
-                          isActive ? 'text-white' : 'text-white/90 group-hover:text-white'
-                        }`}
-                      >
-                        {media.name.replace(/\.[^/.]+$/, '')}
-                      </p>
-                      <div className="flex items-center gap-2 mt-0.5">
-                        <span
-                          className={`
-                            text-[9px] px-1.5 py-0.5 rounded-md font-bold uppercase tracking-wider
-                            backdrop-blur-xl border
-                            ${
-                              isActive
-                                ? 'bg-white/10 border-white/20 text-white'
-                                : 'bg-white/5 border-white/10 text-white/60'
-                            }
-                          `}
-                        >
-                          {media.type}
-                        </span>
-                      </div>
-                    </div>
-
-                    {/* Remove Button */}
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleRemove(media.id);
-                      }}
-                      className={`
-                        w-7 h-7 rounded-lg backdrop-blur-xl flex items-center justify-center transition-all duration-200
-                        border shadow-lg
-                        ${
-                          isActive
-                            ? 'opacity-100 bg-white/5 border-white/10 hover:bg-red-500/10 hover:border-red-500/10 text-white'
-                            : 'opacity-0 group-hover:opacity-100 bg-white/5 border-white/10 hover:bg-red-500/10 hover:border-red-500/10 text-white/70 hover:text-red-300'
-                        }
-                      `}
-                      title="Remove"
-                    >
-                      <X className="w-3.5 h-3.5" />
-                    </button>
-                  </div>
-                );
-              })
+          
+          <div className="flex items-center gap-2">
+            {playlist.length > 0 && (
+              <button
+                onClick={onClear}
+                className="p-2 rounded-lg hover:bg-red-500/10 text-muted-foreground hover:text-red-400 transition-colors border border-transparent hover:border-red-500/20"
+                title="Clear Playlist"
+              >
+                <Trash2 className="w-4 h-4" />
+              </button>
+            )}
+            {onClose && (
+              <button
+                onClick={onClose}
+                className="p-2 rounded-lg hover:bg-white/10 text-muted-foreground hover:text-foreground transition-colors border border-transparent hover:border-white/10"
+                title="Close"
+              >
+                <X className="w-4 h-4" />
+              </button>
             )}
           </div>
-
-          {/* Bottom Blur Effect */}
-          <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-black/20 to-transparent pointer-events-none"></div>
         </div>
+        
+        {/* Optional Add Button - Placeholder if we want to add functionality later */}
+        {/* <button className="w-full py-2 rounded-lg bg-primary/10 hover:bg-primary/20 text-primary text-sm font-medium transition-colors border border-primary/20 flex items-center justify-center gap-2">
+          <Upload className="w-4 h-4" />
+          Add Tracks
+        </button> */}
+      </div>
+
+      {/* Scrollable List */}
+      <div className="flex-1 overflow-y-auto px-3 pb-4 space-y-2 relative z-10 custom-scrollbar">
+        {playlist.length === 0 ? (
+          <div className="h-full flex flex-col items-center justify-center text-muted-foreground space-y-4 opacity-60">
+            <div className="w-16 h-16 rounded-2xl bg-white/5 flex items-center justify-center">
+              <ListMusic className="w-8 h-8 opacity-50" />
+            </div>
+            <p className="text-sm">Your playlist is empty</p>
+          </div>
+        ) : (
+          playlist.map((media, index) => {
+            const isActive = index === currentIndex;
+            return (
+              <div
+                key={media.id}
+                onClick={() => onPlay(index)}
+                className={`
+                  group relative flex items-center gap-3 p-3 rounded-xl cursor-pointer
+                  transition-all duration-300 border
+                  ${
+                    isActive
+                      ? 'bg-primary/10 border-primary/20 shadow-[0_0_20px_-5px_rgba(var(--primary),0.3)]'
+                      : 'bg-transparent border-transparent hover:bg-white/5 hover:border-white/10'
+                  }
+                `}
+              >
+                {/* Status Icon */}
+                <div
+                  className={`
+                    w-10 h-10 rounded-lg flex items-center justify-center shrink-0 transition-all duration-300
+                    ${
+                      isActive
+                        ? 'bg-primary text-primary-foreground shadow-lg scale-105'
+                        : 'bg-white/5 text-muted-foreground group-hover:bg-white/10 group-hover:text-foreground'
+                    }
+                  `}
+                >
+                  {isActive ? (
+                    <Play className="w-4 h-4 fill-current ml-0.5" />
+                  ) : media.type === 'video' ? (
+                    <FileVideo className="w-5 h-5" />
+                  ) : (
+                    <FileAudio className="w-5 h-5" />
+                  )}
+                </div>
+
+                {/* Info */}
+                <div className="flex-1 min-w-0 flex flex-col">
+                  <span className={`text-sm font-medium truncate ${isActive ? 'text-foreground' : 'text-foreground/80 group-hover:text-foreground'}`}>
+                    {media.name.replace(/\.[^/.]+$/, '')}
+                  </span>
+                  <div className="flex items-center gap-2 mt-1">
+                     <span className={`
+                        text-[10px] uppercase tracking-wider font-bold px-1.5 py-0.5 rounded
+                        ${isActive ? 'bg-background/50 text-foreground/70' : 'bg-white/5 text-muted-foreground'}
+                     `}>
+                       {media.type}
+                     </span>
+                  </div>
+                </div>
+
+                {/* Hover Actions */}
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onRemove(media.id);
+                  }}
+                  className={`
+                    w-8 h-8 rounded-lg flex items-center justify-center transition-all duration-200
+                    ${
+                      isActive
+                        ? 'opacity-100 hover:bg-background/20 text-foreground/70 hover:text-red-400'
+                        : 'opacity-0 group-hover:opacity-100 hover:bg-red-500/10 text-muted-foreground hover:text-red-400'
+                    }
+                  `}
+                  title="Remove"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+            );
+          })
+        )}
       </div>
 
       <style>{`
-        @keyframes pulse {
-          0%, 100% { opacity: 0.3; }
-          50% { opacity: 0.6; }
+        .custom-scrollbar::-webkit-scrollbar {
+          width: 4px;
         }
-        
-        .animate-pulse {
-          animation: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        .custom-scrollbar::-webkit-scrollbar-track {
+          background: transparent;
         }
-        
-        .delay-1000 {
-          animation-delay: 1s;
-        }
-
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar {
-          width: 6px;
-        }
-        
-        ::-webkit-scrollbar-track {
-          background: rgba(255, 255, 255, 0.05);
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+          background: rgba(255, 255, 255, 0.1);
           border-radius: 10px;
         }
-        
-        ::-webkit-scrollbar-thumb {
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
           background: rgba(255, 255, 255, 0.2);
-          border-radius: 10px;
-        }
-        
-        ::-webkit-scrollbar-thumb:hover {
-          background: rgba(255, 255, 255, 0.3);
         }
       `}</style>
     </div>
   );
 };
 
-export default AppleGlassPlaylist;
+export default Playlist;

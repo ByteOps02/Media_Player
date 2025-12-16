@@ -333,17 +333,7 @@ const MediaPlayer: React.FC = () => {
 
       {/* Playlist Sidebar */}
       {showPlaylistModal && (
-        <aside className="w-80 h-full flex-shrink-0 bg-secondary flex flex-col p-4 relative overflow-hidden animate-in slide-in-from-right-5 fade-in duration-200">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg font-bold">Playlist</h2>
-            <button
-              onClick={() => setShowPlaylistModal(false)}
-              className="control-btn text-muted-foreground hover:text-foreground bg-background/50 rounded-full p-1"
-              title="Close Playlist"
-            >
-              <X className="w-4 h-4" />
-            </button>
-          </div>
+        <aside className="w-80 h-full flex-shrink-0 relative z-40 animate-in slide-in-from-right-5 fade-in duration-200">
           <Playlist
             playlist={playlist}
             currentIndex={currentIndex}
@@ -353,6 +343,7 @@ const MediaPlayer: React.FC = () => {
             }}
             onRemove={removeFromPlaylist}
             onClear={clearPlaylist}
+            onClose={() => setShowPlaylistModal(false)}
           />
         </aside>
       )}
