@@ -331,16 +331,19 @@ const MediaPlayer: React.FC = () => {
         )}
       </div>
 
-      {/* Playlist Popover */}
+      {/* Playlist Sidebar */}
       {showPlaylistModal && (
-        <div className="absolute bottom-24 left-4 z-50 w-80 max-h-[60vh] rounded-xl overflow-hidden flex flex-col animate-in slide-in-from-bottom-5 fade-in duration-200">
-          <button
-            onClick={() => setShowPlaylistModal(false)}
-            className="absolute top-2 right-2 z-20 control-btn text-muted-foreground hover:text-foreground bg-background/50 rounded-full p-1"
-            title="Close"
-          >
-            <X className="w-4 h-4" />
-          </button>
+        <aside className="w-80 h-full flex-shrink-0 bg-secondary flex flex-col p-4 relative overflow-hidden animate-in slide-in-from-right-5 fade-in duration-200">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-lg font-bold">Playlist</h2>
+            <button
+              onClick={() => setShowPlaylistModal(false)}
+              className="control-btn text-muted-foreground hover:text-foreground bg-background/50 rounded-full p-1"
+              title="Close Playlist"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          </div>
           <Playlist
             playlist={playlist}
             currentIndex={currentIndex}
@@ -351,7 +354,7 @@ const MediaPlayer: React.FC = () => {
             onRemove={removeFromPlaylist}
             onClear={clearPlaylist}
           />
-        </div>
+        </aside>
       )}
 
       {/* Equalizer Modal */}
