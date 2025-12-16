@@ -33,15 +33,15 @@ const Playlist: React.FC<PlaylistProps> = ({
   onClose,
 }) => {
   return (
-    <div className="h-full w-full flex flex-col rounded-2xl overflow-hidden animate-scale-in bg-transparent border border-white/20">
+    <div className="h-full w-full flex flex-col rounded-2xl overflow-hidden animate-scale-in bg-transparent border border-white/20 backdrop-blur-xl">
       {/* Header */}
-      <div className="px-5 py-4 border-b border-white/5 flex items-center justify-between">
+      <div className="px-5 py-4 border-b border-white/10 flex items-center justify-between">
         <div className="flex items-center gap-3">
           <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center text-primary shadow-[0_0_15px_rgba(var(--primary),0.3)]">
             <ListMusic className="w-4 h-4" />
           </div>
           <div>
-            <h2 className="text-sm font-semibold text-white tracking-wide">Playlist</h2>
+            <h2 className="text-sm font-semibold text-white/80 tracking-wide">Playlist</h2>
             <p className="text-[10px] text-white/80 font-medium uppercase tracking-wider">
               {playlist.length} Tracks
             </p>
@@ -88,8 +88,8 @@ const Playlist: React.FC<PlaylistProps> = ({
                   transition-all duration-200 border border-transparent
                   ${
                     isActive
-                      ? 'bg-white/10 border-white/10 shadow-[0_4px_20px_-5px_rgba(0,0,0,0.3)]'
-                      : 'hover:bg-white/5 hover:border-white/5'
+                      ? 'bg-white/10 border-white/10 backdrop-blur-md shadow-[0_4px_20px_-5px_rgba(0,0,0,0.3)]'
+                      : 'hover:bg-white/10 hover:border-white/10'
                   }
                 `}
               >
