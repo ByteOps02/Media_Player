@@ -67,6 +67,7 @@ const MediaPlayer: React.FC = () => {
   // Advanced Features
   const advancedFeatures = useAdvancedFeatures(mediaRef, state.currentTime, togglePlay);
   const [showBookmarks, setShowBookmarks] = useState(false);
+  const [showSubtitleSettings, setShowSubtitleSettings] = useState(false);
 
   const [showPlaylistModal, setShowPlaylistModal] = useState(false);
   const [controlsVisible, setControlsVisible] = useState(true);
@@ -310,7 +311,7 @@ const MediaPlayer: React.FC = () => {
               hasSubtitles={subtitles.subtitles.length > 0}
               subtitlesEnabled={subtitles.isEnabled}
               onOpenEqualizer={() => setShowEqualizer(true)}
-              onOpenSubtitleSettings={() => {}}
+              onOpenSubtitleSettings={() => setShowSubtitleSettings(true)}
               onLoadSubtitle={handleLoadSubtitle}
               onToggleSubtitles={subtitles.toggleSubtitles}
               onClearSubtitles={subtitles.clearSubtitles}

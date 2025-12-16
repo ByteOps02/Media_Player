@@ -108,7 +108,10 @@ const SettingsMenu: React.FC<SettingsMenuProps> = ({
   }> = ({ icon, label, onClick, hasSubmenu, active, badge }) => (
     <button
       type="button"
-      onClick={onClick}
+      onClick={(e) => {
+        e.stopPropagation();
+        onClick?.();
+      }}
       className={`w-full flex items-center gap-2 sm:gap-3 px-3 sm:px-4 py-2 sm:py-2.5 text-xs sm:text-sm hover:bg-secondary/80 transition-colors cursor-pointer
         ${active ? 'text-primary' : textColor}`}
     >
@@ -231,7 +234,7 @@ const SettingsMenu: React.FC<SettingsMenuProps> = ({
                   <MenuItem
                     icon={<Subtitles className="w-4 h-4" />}
                     label={subtitlesEnabled ? 'Hide subtitles' : 'Show subtitles'}
-                    onClick={onToggleSubtitles}
+                    onClick={() => onToggleSubtitles()}
                     active={subtitlesEnabled}
                   />
                   <MenuItem
