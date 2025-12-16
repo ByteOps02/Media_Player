@@ -31,6 +31,7 @@
       "dist",
       "dist-electron"
     ],
+    "csc-override": true,
     "win": {
       "target": "nsis"
     },
